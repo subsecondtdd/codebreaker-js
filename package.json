@@ -1,0 +1,11 @@
+{
+  "name": "codebreaker-js",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "cucumber": "^4.0.0",
+    "cucumber-electron": "^2.4.0",
+    "electron": "^1.8.4"
+  }
+}
