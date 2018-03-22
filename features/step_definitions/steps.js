@@ -15,7 +15,7 @@ When("{Maker} starts a game", async function(maker) {
 });
 
 When("{Breaker} joins {Maker}'s game", async function(breaker, maker) {
-  await maker.sharesGameWith(breaker); // maker.games must have exactly one item
+  await breaker.joinsGameBy(maker); // maker.games must have exactly one item
 });
 
 Then("{Maker} waits for a Breaker to join", function(maker) {

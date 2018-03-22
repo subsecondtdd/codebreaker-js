@@ -22,10 +22,11 @@ class Maker {
   startGameWithWord({ word }) {
     this.games.push(new Game({ word }));
   }
-
-  sharesGameWith(breaker) {}
 }
-class Breaker {}
+
+class Breaker {
+  joinsGameBy(maker) {}
+}
 
 const roles = {
   Maker,
