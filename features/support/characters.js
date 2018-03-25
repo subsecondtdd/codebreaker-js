@@ -1,16 +1,16 @@
 const { defineParameterType } = require("cucumber");
 
-const roles = {
-  Maker: ["the Maker"],
-  Breaker: ["the Breaker"]
+const characterNamesByRoleName = {
+  maker: ["the Maker"],
+  breaker: ["the Breaker"]
 };
 
-Object.keys(roles).forEach(roleName => {
+Object.keys(characterNamesByRoleName).forEach(roleName =>
   defineParameterType({
     name: roleName,
-    regexp: new RegExp(roles[roleName].join("|")),
-    transformer(name) {
-      return this.assembly.createCharacter({ roleName, name });
+    regexp: new RegExp(characterNamesByRoleName[roleName].join("|")),
+    transformer(characterName) {
+      return this.findOrCreateCharacter({ roleName, characterName });
     }
-  });
-});
+  })
+);

@@ -2,12 +2,10 @@ Feature: Guess the word
 
   # Maker starts
 
-  @wip
   Scenario: Maker starts a game
     When the Maker starts a game
     Then the Maker waits for a Breaker to join
 
-  @wip
   Scenario: Breaker joins a game
     Given the Maker has started a game with the word "silky"
     When the Breaker joins the Maker's game

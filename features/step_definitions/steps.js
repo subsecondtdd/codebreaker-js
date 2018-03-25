@@ -1,39 +1,10 @@
 const { Given, When, Then } = require("cucumber");
 const assert = require("assert");
 
-Given("{Maker} has started a game with the word {string}", async function(
-  maker,
-  word
-) {
-  return maker.startGameWithWord({ word });
+When("{maker} starts a game", async function(maker) {
+  await maker.startGameWithWord({ word: "whale" });
 });
 
-When("{Maker} starts a game", async function(maker) {
-  // maker.games == []
-  await maker.startGameWithWord({ word: "whale" }); // maker.games == [{...}]
-  // await maker.startGameWithWord({ word: "whale" }); // maker.games == [{...}, {...}]
+Then("{maker} waits for a Breaker to join", function(maker) {
+  assert.equal(maker.getVisibleGameState(), "waiting-for-breaker-to-join");
 });
-
-When("{Breaker} joins {Maker}'s game", async function(breaker, maker) {
-  await breaker.joinsGameBy(maker); // maker.games must have exactly one item
-});
-
-Then("{Maker} waits for a Breaker to join", function(maker) {
-  assert.equal(maker.games[0].getStatus(), "Waiting for breaker to join");
-});
-
-Then("{Breaker} must guess a word with {int} characters", function(
-  Breaker,
-  int,
-  callback
-) {
-  // Write code here that turns the phrase above into concrete actions
-  callback(null, "pending");
-});
-//
-// Then("{Breaker} must guess a word with {int} characters", function(
-//   breaker,
-//   expectedWordLength
-// ) {
-//   assert.equal(breaker.uiQueries.gameWordLength(), expectedWordLength);
-// });
