@@ -4,11 +4,15 @@ module.exports = class Breaker {
   }
 
   async joinGameStartedBy(maker) {
-    const game = maker.getLatestGame();
+    const game = maker.getOnlyGame();
     this.views.push(await this.views[0].joinGame({ game }));
   }
 
-  getVisibleGameState() {
-    return this.views[1].getVisibleGameState();
+  async guess({ word }) {
+    await this.views[1].guess({ word });
+  }
+
+  getOnlyGame() {
+    return this.views[1].getGame();
   }
 };

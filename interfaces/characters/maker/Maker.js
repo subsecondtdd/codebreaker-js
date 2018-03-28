@@ -11,7 +11,7 @@ module.exports = class Maker {
     return this.views[1].getVisibleGameState();
   }
 
-  getLatestGame() {
+  getOnlyGame() {
     return this.views[1].getGame();
   }
 };

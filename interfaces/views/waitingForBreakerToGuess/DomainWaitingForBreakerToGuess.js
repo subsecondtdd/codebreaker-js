@@ -3,10 +3,11 @@ module.exports = class DomainWaitingForBreakerToGuess {
     this.game = game;
   }
 
-  getVisibleGameState() {
-    return {
-      name: "waiting-for-breaker-to-guess",
-      wordLength: this.game.wordLength
-    };
+  async guess({ word }) {
+    this.game.guess({ word });
+  }
+
+  getGame() {
+    return this.game;
   }
 };
