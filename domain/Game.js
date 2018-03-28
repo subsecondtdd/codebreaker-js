@@ -1,1 +1,5 @@
-module.exports = class Game {};
+module.exports = class Game {
+  constructor() {
+    this.wordLength = 5;
+  }
+};

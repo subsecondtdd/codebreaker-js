@@ -1,7 +1,7 @@
 const Game = require("../../../domain/Game");
-const DomainWaitingForBreaker = require("../waitingForBreaker/DomainWaitingForBreaker");
+const DomainWaitingForBreakerToJoin = require("../waitingForBreakerToJoin/DomainWaitingForBreakerToJoin");
 
-module.exports = class DomainWaitingForMaker {
+module.exports = class DomainWaitingForMakerToStartGame {
   constructor({ gameStore }) {
     this.gameStore = gameStore;
   }
@@ -9,6 +9,6 @@ module.exports = class DomainWaitingForMaker {
   async startGameWithWord({ word }) {
     const game = new Game({ word });
     await this.gameStore.storeGame(game);
-    return new DomainWaitingForBreaker({ game });
+    return new DomainWaitingForBreakerToJoin({ game });
   }
 };

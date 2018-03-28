@@ -1,3 +1,4 @@
 module.exports = {
-  maker: require("./maker/Maker")
+  maker: require("./maker/Maker"),
+  breaker: require("./breaker/Breaker")
 };
