@@ -13,7 +13,6 @@ Feature: Guess the word
 
   # Turn based
 
-  @wip
   Scenario: Breaker guesses a word
     Given the Breaker has joined the Maker's game
     When the Breaker makes a guess

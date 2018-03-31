@@ -1,18 +1,14 @@
 module.exports = class Breaker {
-  constructor({ waitingForInvitation }) {
-    this.views = [waitingForInvitation];
-  }
-
   async joinGameStartedBy(maker) {
-    const game = maker.getOnlyGame();
-    this.views.push(await this.views[0].joinGame({ game }));
+    this.game = maker.getGame();
+    this.game.join();
   }
 
   async guess({ word }) {
-    await this.views[1].guess({ word });
+    await this.game.guess({ word });
   }
 
-  getOnlyGame() {
-    return this.views[1].getGame();
+  getGame() {
+    return this.game;
   }
 };

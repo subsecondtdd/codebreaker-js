@@ -1,17 +1,17 @@
 module.exports = class Maker {
-  constructor({ waitingForMakerToStartGame }) {
-    this.views = [waitingForMakerToStartGame];
+  constructor({ gameFactory }) {
+    this.gameFactory = gameFactory;
   }
 
   async startGameWithWord({ word }) {
-    this.views.push(await this.views[0].startGameWithWord({ word }));
+    this.game = this.gameFactory.createGame({ word });
   }
 
-  getVisibleGameState() {
-    return this.views[1].getVisibleGameState();
+  async score({ score }) {
+    await this.game.score({ score });
   }
 
-  getOnlyGame() {
-    return this.views[1].getGame();
+  getGame() {
+    return this.game;
   }
 };

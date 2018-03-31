@@ -1,11 +1,5 @@
 const { setWorldConstructor } = require("cucumber");
-const {
-  Container,
-  Assembly,
-  characters,
-  views,
-  ports
-} = require("../../interfaces");
+const { Container, Assembly, characters, ports } = require("../../interfaces");
 
 class World {
   constructor() {
@@ -16,11 +10,6 @@ class World {
         role,
         Constructor: characters[role]
       })
-    );
-    Object.keys(views).forEach(role =>
-      views[role].forEach(Constructor =>
-        this._container.register({ role, Constructor })
-      )
     );
     Object.keys(ports).forEach(role =>
       ports[role].forEach(Constructor =>
