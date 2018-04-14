@@ -1,28 +1,32 @@
 module.exports = class Game {
-  constructor() {
-    this.wordLength = 5;
-    this.state = "waiting for breaker to join";
+  constructor({ gameId }) {
+    this.gameId = gameId;
     this.guesses = [];
+    this.wordLength = 5;
+    this.breakerJoined = false;
   }
 
   join() {
-    this.state = "waiting for breaker to guess";
+    this.breakerJoined = true;
   }
 
-  guess({ word }) {
-    this.state = "waiting for maker to score";
-    this.guesses.push({ word });
+  guessWord({ guess }) {
+    this.guesses.push({ guess, points: null, correct: null });
   }
 
-  score({ score }) {
-    this.guesses[this.guesses.length - 1].score = score;
-  }
-
-  getLatestScore() {
-    return this.guesses[this.guesses.length - 1].score;
+  scoreLatestGuess(points) {
+    const latestGuess = this.guesses[this.guesses.length - 1];
+    latestGuess.points = points;
   }
 
   describeState() {
-    return this.state;
+    if (!this.breakerJoined) {
+      return "waiting for breaker to join";
+    }
+    const latestGuess = this.guesses[this.guesses.length - 1];
+    if (latestGuess && latestGuess.points === null) {
+      return "waiting for maker to score guess";
+    }
+    return "waiting for breaker to guess word";
   }
 };

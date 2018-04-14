@@ -1,4 +1,4 @@
 module.exports = {
-  gameFactory: [require("./gameFactory/DomainGameFactory")],
-  gameStore: [require("./gameStore/MemoryGameStore")]
+  gameStore: [require("./gameStore/MemoryGameStore")],
+  idGenerator: [require("./idGenerator/SerialIdGenerator")]
 };

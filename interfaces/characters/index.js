@@ -1,4 +1,3 @@
 module.exports = {
-  maker: require("./maker/Maker"),
-  breaker: require("./breaker/Breaker")
+  player: require("./player/Player")
 };

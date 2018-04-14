@@ -1,44 +1,49 @@
 class Container {
   constructor(assembly) {
     this.registrations = {};
+    this.singletons = {};
     this.assembly = assembly;
   }
 
-  register({ role, Constructor }) {
-    this.registrations[role] = (this.registrations[role] || []).concat(
-      Constructor
-    );
-  }
-
-  resolve(role, owner) {
-    const constructors = this.registrations[role] || [];
-    const Constructor = this.assembly.chooseConstructor({
-      role,
-      constructors,
-      owner
+  register({ role, Constructor, scope }) {
+    this.registrations[role] = (this.registrations[role] || []).concat({
+      Constructor,
+      scope
     });
-    return this.instantiate(Constructor, owner);
   }
 
-  instantiate(Constructor, owner) {
-    return new Constructor(
-      Injections.build({ Constructor, owner, container: this })
-    );
+  resolve(role) {
+    if (this.singletons[role]) {
+      return this.singletons[role];
+    }
+    const registrations = this.registrations[role] || [];
+    const registration = this.assembly.chooseRegistration({
+      role,
+      registrations
+    });
+    const instance = this.instantiate(registration.Constructor);
+    if (registration.scope === "singleton") {
+      this.singletons[role] = instance;
+    }
+    return instance;
+  }
+
+  instantiate(Constructor) {
+    return new Constructor(Injections.build({ Constructor, container: this }));
   }
 }
 
 class Injections {
-  static build({ Constructor, owner, container }) {
-    return new Proxy(Constructor, new Injections(owner, container));
+  static build({ Constructor, container }) {
+    return new Proxy(Constructor, new Injections(container));
   }
 
-  constructor(owner, container) {
-    this.owner = owner;
+  constructor(container) {
     this.container = container;
   }
 
   get(target, property) {
-    return this.container.resolve(property, this.owner);
+    return this.container.resolve(property);
   }
 }
 

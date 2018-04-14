@@ -1,17 +1,13 @@
 module.exports = class Assembly {
-  chooseConstructor({ role, constructors, owner }) {
-    switch (constructors.length) {
+  chooseRegistration({ role, registrations }) {
+    switch (registrations.length) {
       case 1:
-        return constructors[0];
+        return registrations[0];
       case 0:
-        throw new Error(`No constructor registered for role '${role}'`);
+        throw new Error(`No registration for role '${role}'`);
       default:
         throw new Error(
-          `${
-            constructors.length
-          } constructors registered for role '${role}': [${constructors
-            .map(c => c.name)
-            .join(", ")}]`
+          `${registrations.length} registrations for role '${role}'`
         );
     }
   }

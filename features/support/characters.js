@@ -1,8 +1,7 @@
 const { defineParameterType } = require("cucumber");
 
 const characterNamesByRoleName = {
-  maker: ["the Maker"],
-  breaker: ["the Breaker"]
+  player: ["the Maker", "the Breaker"]
 };
 
 Object.keys(characterNamesByRoleName).forEach(roleName =>
