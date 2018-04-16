@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "test": "cucumber-electron"
+  },
   "dependencies": {
     "cucumber": "^4.0.0",
     "cucumber-electron": "^2.4.0",
