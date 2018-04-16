@@ -1,20 +1,12 @@
 module.exports = class ObjectBrowser {
   constructor({ controllers }) {
     this._controllers = controllers;
-    this._id = nextId++;
   }
 
   async openApplication() {
     await this._performAction({
       action: "openApplication",
       params: {}
-    });
-  }
-
-  async startGameWithWord({ word }) {
-    await this.submitForm({
-      action: "startGameWithWord",
-      params: { word }
     });
   }
 
@@ -97,5 +89,3 @@ module.exports = class ObjectBrowser {
     return JSON.stringify(this._renderedView);
   }
 };
-
-let nextId = 0;
