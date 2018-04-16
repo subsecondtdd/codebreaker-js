@@ -2,12 +2,10 @@ Feature: Guess the word
 
   # Maker starts
 
-  @wip
   Scenario: Maker starts a game
     When the Maker starts a game
     Then the Maker waits for a Breaker to join
 
-  @wip
   Scenario: Breaker joins a game
     Given the Maker has started a game with the word "silky"
     When the Breaker joins the Maker's game
@@ -15,13 +13,11 @@ Feature: Guess the word
 
   # Turn based
 
-  @wip
   Scenario: Breaker guesses a word
     Given the Breaker has joined the Maker's game
     When the Breaker makes a guess
     Then the Maker is asked to score
 
-  @wip @vwip
   Scenario: Maker scores a guess
     Given the Breaker has made the first guess
     When the Maker scores 2
