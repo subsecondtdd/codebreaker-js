@@ -15,6 +15,7 @@ module.exports = class PlayAsMakerController {
           ]
         };
       case "waiting for breaker to guess word":
+      case "game over":
         return {
           description: state
         };

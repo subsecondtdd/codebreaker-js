@@ -14,9 +14,10 @@ module.exports = class Game {
     this.guesses.push({ guess, points: null, correct: null });
   }
 
-  scoreLatestGuess(points) {
+  scoreLatestGuess({ points, correct }) {
     const latestGuess = this.guesses[this.guesses.length - 1];
     latestGuess.points = points;
+    latestGuess.correct = correct;
   }
 
   describeState() {
@@ -24,8 +25,10 @@ module.exports = class Game {
       return "waiting for breaker to join";
     }
     const latestGuess = this.guesses[this.guesses.length - 1];
-    if (latestGuess && latestGuess.points === null) {
-      return "waiting for maker to score guess";
+    if (latestGuess) {
+      if (latestGuess.correct) return "game over";
+      if (latestGuess.points === null)
+        return "waiting for maker to score guess";
     }
     return "waiting for breaker to guess word";
   }

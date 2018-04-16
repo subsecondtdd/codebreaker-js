@@ -18,17 +18,17 @@ module.exports = class Player {
     await this._browser.openLink(maker.getVisibleLink({ action: "joinGame" }));
   }
 
-  async guessWord({ guess }) {
+  async guessWord(params) {
     await this._browser.submitForm({
       action: "guessWord",
-      params: { guess }
+      params
     });
   }
 
-  async scoreLatestGuess({ points }) {
+  async scoreLatestGuess(params) {
     await this._browser.submitForm({
       action: "scoreLatestGuess",
-      params: { points }
+      params
     });
   }
 

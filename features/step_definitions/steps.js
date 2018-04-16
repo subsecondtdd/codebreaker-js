@@ -69,7 +69,15 @@ When("{player} makes a guess", async function breakerGuessesWord(breaker) {
 });
 
 When("{player} scores {int}", async function makerScores(maker, points) {
-  await maker.scoreLatestGuess({ points });
+  await maker.scoreLatestGuess({ points, correct: false });
+});
+
+When("{player} scores the guess as correct", async function(maker) {
+  await maker.scoreLatestGuess({ points: 5, correct: true });
+});
+
+When("{player} scores the guess as incorrect", async function(maker) {
+  await maker.scoreLatestGuess({ points: 5, correct: false });
 });
 
 Then(
@@ -109,7 +117,7 @@ Then("{player}'s guess is not submitted", function breakersGuessIsNotSubmitted(
 Then("{player}'s guess is submitted", function breakersGuessIsSubmitted(
   breaker
 ) {
-  assert.equal(breaker.describeView(), "guess submitted");
+  assert.equal(breaker.describeView(), "waiting for maker to score guess");
 });
 
 Then("{player} sees that the game is over", function breakerSeesGameOver(
@@ -121,5 +129,5 @@ Then("{player} sees that the game is over", function breakerSeesGameOver(
 Then("{player} sees that the game is not over", function breakerSeesGameNotOver(
   breaker
 ) {
-  assert.equal(breaker.describeView(), "awaiting score");
+  assert.equal(breaker.describeView(), "waiting for breaker to guess word");
 });

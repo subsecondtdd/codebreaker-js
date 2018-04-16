@@ -5,10 +5,16 @@ module.exports = class GuessWordController {
 
   async guessWord({ gameId, guess }) {
     const game = await this._gameStore.getGameById(gameId);
-    game.guessWord({ guess });
-    await this._gameStore.storeGame(game);
-    return {
-      description: "guess submitted"
-    };
+    if (guess.length === game.wordLength) {
+      game.guessWord({ guess });
+      await this._gameStore.storeGame(game);
+      return {
+        description: game.describeState()
+      };
+    } else {
+      return {
+        description: "guess not submitted"
+      };
+    }
   }
 };
