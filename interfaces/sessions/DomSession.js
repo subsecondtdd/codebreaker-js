@@ -4,21 +4,27 @@ module.exports = class DomSession {
   }
 
   async startSession() {
-    const div = document.createElement("div");
-    div.style.border = "1px solid green";
-    document.body.appendChild(div);
-    await this._webAppDomRenderer.renderWebAppInElement(div);
+    this._element = document.createElement("div");
+    this._element.style.border = "1px solid green";
+    document.body.appendChild(this._element);
+    await this._webAppDomRenderer.renderWebAppInElement(this._element);
   }
 
   async dispatchCommand({ action, params }) {
     const forms = [].slice
-      .apply(document.querySelectorAll("form"))
+      .apply(this._element.querySelectorAll("form"))
       .filter(form => form.getAttribute("data-action") === action);
     if (forms.length !== 1) {
       throw new Error(
         `Found ${forms.length} forms with data-action="${action}"`
       );
     }
-    throw new Error("wip");
+    Object.keys(params).forEach(param => {
+      const inputs = this._element.querySelectorAll(`input[name="${param}"]`);
+      if (inputs.length !== 1) {
+        throw new Error(`Found ${inputs.length} inputs for param '${param}'`);
+      }
+      input.value = params[param];
+    });
   }
 };
