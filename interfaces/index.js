@@ -4,5 +4,6 @@ module.exports = {
   characters: require("./characters"),
   ports: require("./ports"),
   controllers: require("./controllers"),
-  sessions: require("./sessions")
+  sessions: require("./sessions"),
+  web: require('./web')
 };

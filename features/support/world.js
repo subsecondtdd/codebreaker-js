@@ -5,7 +5,8 @@ const {
   characters,
   ports,
   sessions,
-  controllers
+  controllers,
+  web
 } = require("../../interfaces");
 
 class World {
@@ -22,6 +23,13 @@ class World {
       ports[role].forEach(Constructor =>
         this._container.register({ role, Constructor, scope: "singleton" })
       )
+    );
+    Object.keys(web).forEach(role =>
+      this._container.register({
+        role,
+        Constructor: web[role],
+        scope: "singleton"
+      })
     );
     sessions.forEach(Constructor =>
       this._container.register({
