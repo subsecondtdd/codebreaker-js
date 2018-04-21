@@ -1,5 +1,9 @@
 module.exports = class Assembly {
   chooseRegistration({ role, registrations }) {
+    if(role === 'session' && process.env.SESSION) {
+        registrations = registrations.filter(r => r.Constructor.name === process.env.SESSION )
+    }
+
     switch (registrations.length) {
       case 1:
         return registrations[0];

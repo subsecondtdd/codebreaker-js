@@ -1,1 +1,1 @@
-module.exports = [require("./DirectSession")];
+module.exports = [require("./DirectSession"), require("./DomSession")];
