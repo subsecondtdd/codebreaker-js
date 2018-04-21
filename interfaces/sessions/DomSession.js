@@ -19,12 +19,19 @@ module.exports = class DomSession {
         `Found ${forms.length} forms with data-action="${action}"`
       );
     }
+    const form = forms[0];
     Object.keys(params).forEach(param => {
-      const inputs = this._element.querySelectorAll(`input[name="${param}"]`);
+      const inputs = form.querySelectorAll(`input[name="${param}"]`);
       if (inputs.length !== 1) {
         throw new Error(`Found ${inputs.length} inputs for param '${param}'`);
       }
-      input.value = params[param];
+      inputs[0].value = params[param];
     });
+    const submits = form.querySelectorAll('input[type="submit"]');
+    if (submits.length !== 1) {
+      throw new Error(`Found ${submits.length} submit elements`);
+    }
+    const submit = submits[0];
+    submit.click();
   }
 };
