@@ -1,39 +1,133 @@
 const { Given, When, Then } = require("cucumber");
 const assert = require("assert");
 
-Given("{Maker} has started a game with the word {string}", async function(
-  maker,
-  word
+Given(
+  "{player} has started a game with the word {string}",
+  async function makerHasStartedGameWithWord(maker, word) {
+    await maker.startSession();
+    await maker.startGameWithWord({ word });
+  }
+);
+
+Given(
+  "{player} has joined a game started with the word {string}",
+  async function breakerHasJoinedGameStartedWithWord(breaker, word) {
+    const maker = await this.findOrCreateCharacter({
+      roleName: "player",
+      characterName: "the Maker"
+    });
+    await maker.startSession();
+    await maker.startGameWithWord({ word });
+    await breaker.joinGameStartedBy(maker);
+  }
+);
+
+Given(
+  "{player} has joined {player}'s game",
+  async function breakerHasJoinedMakersGame(breaker, maker) {
+    await maker.startSession();
+    await maker.startGameWithWord({ word: "bingo" });
+    await breaker.joinGameStartedBy(maker);
+  }
+);
+
+Given(
+  "{player} has made the first guess",
+  async function breakerHasMadeFirstGuess(breaker) {
+    const maker = await this.findOrCreateCharacter({
+      roleName: "player",
+      characterName: "the Maker"
+    });
+    await maker.startSession();
+    await maker.startGameWithWord({ word: "noise" });
+    await breaker.joinGameStartedBy(maker);
+    await breaker.guessWord({ guess: "cameo" });
+  }
+);
+
+When("{player} starts a game", async function makerStartsGame(maker) {
+  await maker.startSession();
+  await maker.startGameWithWord({ word: "bingo" });
+});
+
+When("{player} joins {player}'s game", async function breakerJoinsMakersGame(
+  breaker,
+  maker
 ) {
-  return maker.startGameWithWord({ word });
+  await breaker.joinGameStartedBy(maker);
 });
 
-When("{Maker} starts a game", async function(maker) {
-  // maker.games == []
-  await maker.startGameWithWord({ word: "whale" }); // maker.games == [{...}]
-  // await maker.startGameWithWord({ word: "whale" }); // maker.games == [{...}, {...}]
-});
-
-When("{Breaker} joins {Maker}'s game", async function(breaker, maker) {
-  await breaker.joinsGameBy(maker); // maker.games must have exactly one item
-});
-
-Then("{Maker} waits for a Breaker to join", function(maker) {
-  assert.equal(maker.games[0].getStatus(), "Waiting for breaker to join");
-});
-
-Then("{Breaker} must guess a word with {int} characters", function(
-  Breaker,
-  int,
-  callback
+When("{player} guesses {string}", async function breakerGuessesWordWithGuess(
+  breaker,
+  guess
 ) {
-  // Write code here that turns the phrase above into concrete actions
-  callback(null, "pending");
+  await breaker.guessWord({ guess });
 });
-//
-// Then("{Breaker} must guess a word with {int} characters", function(
-//   breaker,
-//   expectedWordLength
-// ) {
-//   assert.equal(breaker.uiQueries.gameWordLength(), expectedWordLength);
-// });
+
+When("{player} makes a guess", async function breakerGuessesWord(breaker) {
+  await breaker.guessWord({ guess: "bonus" });
+});
+
+When("{player} scores {int}", async function makerScores(maker, points) {
+  await maker.scoreLatestGuess({ points, correct: false });
+});
+
+When("{player} scores the guess as correct", async function(maker) {
+  await maker.scoreLatestGuess({ points: 5, correct: true });
+});
+
+When("{player} scores the guess as incorrect", async function(maker) {
+  await maker.scoreLatestGuess({ points: 5, correct: false });
+});
+
+Then(
+  "{player} waits for a Breaker to join",
+  function makerWaitsForBreakerToJoin(maker) {
+    assert.equal(maker.describeView(), "waiting for breaker to join");
+  }
+);
+
+Then("{player} sees the score {int}", function breakerSeesTheScore(
+  breaker,
+  points
+) {
+  assert.equal(breaker.describeView(), "waiting for breaker to guess word");
+  const guesses = breaker.getVisibleData("guesses");
+  assert.equal(guesses[guesses.length - 1].points, points);
+});
+
+Then(
+  "{player} must guess a word with {int} characters",
+  function breakerMustGuessWordWithLength(breaker, wordLength) {
+    assert.equal(breaker.describeView(), "waiting for breaker to guess word");
+    assert.equal(breaker.getVisibleData("wordLength"), wordLength);
+  }
+);
+
+Then("{player} is asked to score", function makerIsAskedToScore(maker) {
+  assert.equal(maker.describeView(), "waiting for maker to score guess");
+});
+
+Then("{player}'s guess is not submitted", function breakersGuessIsNotSubmitted(
+  breaker
+) {
+  assert.equal(breaker.describeView(), "guess not submitted");
+});
+
+Then("{player}'s guess is submitted", function breakersGuessIsSubmitted(
+  breaker
+) {
+  assert.equal(breaker.describeView(), "waiting for maker to score guess");
+});
+
+Then("{player} sees that the game is over", function breakerSeesGameOver(
+  breaker
+) {
+  assert.equal(breaker.describeView(), "game over");
+});
+
+Then("{player} sees that the game is not over", function breakerSeesGameNotOver(
+  breaker
+) {
+  assert.equal(breaker.describeView(), "waiting for breaker to guess word");
+});
