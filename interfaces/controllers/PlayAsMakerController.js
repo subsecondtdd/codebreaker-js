@@ -10,7 +10,7 @@ module.exports = class PlayAsMakerController {
       case "waiting for maker to score guess":
         return {
           description: state,
-          forms: [
+          commands: [
             { action: "scoreLatestGuess", params: { gameId: game.gameId } }
           ]
         };

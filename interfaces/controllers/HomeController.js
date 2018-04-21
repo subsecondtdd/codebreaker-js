@@ -1,8 +1,9 @@
+// This is the START state
 module.exports = class HomeController {
   openApplication() {
     return {
       description: "home",
-      forms: [{ action: "startGameWithWord" }]
+      commands: [{ action: "startGameWithWord" }]
     };
   }
 };

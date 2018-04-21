@@ -1,4 +1,4 @@
-module.exports = class ObjectBrowser {
+module.exports = class DirectSession {
   constructor({ controllers }) {
     this._controllers = controllers;
   }
@@ -48,17 +48,17 @@ module.exports = class ObjectBrowser {
   }
 
   async submitForm({ action, params }) {
-    const forms = this._renderedView.forms;
-    if (!forms) {
-      throw new Error(`View has no forms: ${this._inspectView()}`);
+    const commands = this._renderedView.commands;
+    if (!commands) {
+      throw new Error(`View has no commands: ${this._inspectView()}`);
     }
-    const form = this._renderedView.forms.find(form => form.action === action);
-    if (form) {
-      const mergedParams = Object.assign({}, params, form.params);
+    const command = this._renderedView.commands.find(command => command.action === action);
+    if (command) {
+      const mergedParams = Object.assign({}, params, command.params);
       await this._performAction({ action, params: mergedParams });
     } else {
       throw new Error(
-        `View has no form with action '${action}': ${this._inspectView()}`
+        `View has no command with action '${action}': ${this._inspectView()}`
       );
     }
   }

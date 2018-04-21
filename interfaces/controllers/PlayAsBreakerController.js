@@ -3,7 +3,7 @@ module.exports = class PlayAsBreakerController {
     const state = game.describeState();
     return {
       description: state,
-      forms:
+      commands:
         state === "waiting for breaker to guess word"
           ? [
               {

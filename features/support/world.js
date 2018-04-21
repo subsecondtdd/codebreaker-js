@@ -4,7 +4,7 @@ const {
   Assembly,
   characters,
   ports,
-  browsers,
+  sessions,
   controllers
 } = require("../../interfaces");
 
@@ -23,7 +23,7 @@ class World {
         this._container.register({ role, Constructor, scope: "singleton" })
       )
     );
-    browsers.forEach(Constructor =>
+    sessions.forEach(Constructor =>
       this._container.register({
         role: "browser",
         Constructor
