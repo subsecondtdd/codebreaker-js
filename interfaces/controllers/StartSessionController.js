@@ -1,5 +1,5 @@
 // This is the START state
-module.exports = class HomeController {
+module.exports = class StartSessionController {
   startSession() {
     return {
       description: "home",

@@ -25,7 +25,7 @@ class World {
     );
     sessions.forEach(Constructor =>
       this._container.register({
-        role: "browser",
+        role: "session",
         Constructor
       })
     );

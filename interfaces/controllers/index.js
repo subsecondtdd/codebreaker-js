@@ -1,6 +1,6 @@
 module.exports = buildControllerFactory([
   require("./GuessWordController"),
-  require("./HomeController"),
+  require("./StartSessionController"),
   require("./JoinGameController"),
   require("./PlayAsBreakerController"),
   require("./PlayAsMakerController"),
@@ -18,9 +18,11 @@ function buildControllerFactory(constructors) {
       }
 
       findControllerWithAction(action) {
-        return this._controllers.find(
-          controller => typeof controller[action] === "function"
-        );
+          const controllers = this._controllers.filter(
+              controller => typeof controller[action] === "function"
+          )
+          if(controllers.length !== 1) throw new Error(`Expected 1 controller for ${action}, found ${controllers.length}`)
+          return controllers[0];
       }
     };
 }

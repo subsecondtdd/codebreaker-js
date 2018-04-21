@@ -47,7 +47,7 @@ module.exports = class DirectSession {
     return value;
   }
 
-  async submitForm({ action, params }) {
+  async dispatchCommand({ action, params }) {
     const commands = this._renderedView.commands;
     if (!commands) {
       throw new Error(`View has no commands: ${this._inspectView()}`);
