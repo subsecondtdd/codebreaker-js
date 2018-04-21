@@ -3,9 +3,9 @@ module.exports = class DirectSession {
     this._controllers = controllers;
   }
 
-  async openApplication() {
+  async startSession() {
     await this._performAction({
-      action: "openApplication",
+      action: "startSession",
       params: {}
     });
   }

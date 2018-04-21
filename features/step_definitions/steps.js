@@ -4,7 +4,7 @@ const assert = require("assert");
 Given(
   "{player} has started a game with the word {string}",
   async function makerHasStartedGameWithWord(maker, word) {
-    await maker.openApplication();
+    await maker.startSession();
     await maker.startGameWithWord({ word });
   }
 );
@@ -16,7 +16,7 @@ Given(
       roleName: "player",
       characterName: "the Maker"
     });
-    await maker.openApplication();
+    await maker.startSession();
     await maker.startGameWithWord({ word });
     await breaker.joinGameStartedBy(maker);
   }
@@ -25,7 +25,7 @@ Given(
 Given(
   "{player} has joined {player}'s game",
   async function breakerHasJoinedMakersGame(breaker, maker) {
-    await maker.openApplication();
+    await maker.startSession();
     await maker.startGameWithWord({ word: "bingo" });
     await breaker.joinGameStartedBy(maker);
   }
@@ -38,7 +38,7 @@ Given(
       roleName: "player",
       characterName: "the Maker"
     });
-    await maker.openApplication();
+    await maker.startSession();
     await maker.startGameWithWord({ word: "noise" });
     await breaker.joinGameStartedBy(maker);
     await breaker.guessWord({ guess: "cameo" });
@@ -46,7 +46,7 @@ Given(
 );
 
 When("{player} starts a game", async function makerStartsGame(maker) {
-  await maker.openApplication();
+  await maker.startSession();
   await maker.startGameWithWord({ word: "bingo" });
 });
 

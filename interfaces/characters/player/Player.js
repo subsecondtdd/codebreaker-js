@@ -3,8 +3,8 @@ module.exports = class Player {
     this._browser = browser;
   }
 
-  async openApplication() {
-    await this._browser.openApplication();
+  async startSession() {
+    await this._browser.startSession();
   }
 
   async startGameWithWord({ word }) {
