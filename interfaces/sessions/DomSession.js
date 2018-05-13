@@ -59,16 +59,10 @@ module.exports = class DomSession {
 
     const renderCount = () => this._element.getAttribute("data-render-count");
     const renderCountBeforeClicking = renderCount();
-    const descriptionBeforeClicking = this.describeView();
     submit.click();
     await eventually(async () => {
-      if (
-        descriptionBeforeClicking === this.describeView() &&
-        renderCountBeforeClicking === renderCount()
-      ) {
-        throw new Error(
-          `Expected data-view-description to change from '${descriptionBeforeClicking}'`
-        );
+      if (renderCountBeforeClicking === renderCount()) {
+        throw new Error("Expected data-render-count to change");
       }
     });
   }
