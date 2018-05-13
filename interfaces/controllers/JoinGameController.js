@@ -8,10 +8,9 @@ module.exports = class JoinGameController {
     game.join();
     await this._gameStore.storeGame(game);
     return {
-      stream: {
-        emitter: this._gameStore.makeGameChangeEmitter({ gameId }),
+      redirectTo: {
         action: "playAsBreaker",
-        params: { game }
+        params: { gameId }
       }
     };
   }

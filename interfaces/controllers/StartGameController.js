@@ -11,10 +11,9 @@ module.exports = class StartGameController {
     const game = new Game({ gameId });
     await this._gameStore.storeGame(game);
     return {
-      stream: {
-        emitter: this._gameStore.makeGameChangeEmitter({ gameId }),
+      redirectTo: {
         action: "playAsMaker",
-        params: { game }
+        params: { gameId }
       }
     };
   }

@@ -18,11 +18,14 @@ function buildControllerFactory(constructors) {
       }
 
       findControllerWithAction(action) {
-          const controllers = this._controllers.filter(
-              controller => typeof controller[action] === "function"
-          )
-          if(controllers.length !== 1) throw new Error(`Expected 1 controller for ${action}, found ${controllers.length}`)
-          return controllers[0];
+        const controllers = this._controllers.filter(
+          controller => typeof controller[action] === "function"
+        );
+        if (controllers.length !== 1)
+          throw new Error(
+            `Expected 1 controller for ${action}, found ${controllers.length}`
+          );
+        return controllers[0];
       }
     };
 }

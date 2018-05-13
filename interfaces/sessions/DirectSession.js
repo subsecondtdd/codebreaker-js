@@ -52,7 +52,9 @@ module.exports = class DirectSession {
     if (!commands) {
       throw new Error(`View has no commands: ${this._inspectView()}`);
     }
-    const command = this._renderedView.commands.find(command => command.action === action);
+    const command = this._renderedView.commands.find(
+      command => command.action === action
+    );
     if (command) {
       const mergedParams = Object.assign({}, params, command.params);
       await this._performAction({ action, params: mergedParams });
@@ -65,24 +67,23 @@ module.exports = class DirectSession {
 
   async _performAction({ action, params }) {
     const controller = this._controllers.findControllerWithAction(action);
-    const rendering = await controller[action].call(controller, params);
-    if (!rendering) {
-      throw new Error(`Action ${action} returned ${typeof rendering}`);
-    }
-    if (rendering.stream) {
-      await this._renderStream(rendering.stream);
+    const renderedView = await controller[action].call(controller, params);
+    if (!renderedView) {
+      throw new Error(`Action ${action} returned ${typeof renderedView}`);
+    } else if (typeof renderedView === "function") {
+      await this._renderResponseStream(renderedView);
+    } else if (renderedView.redirectTo) {
+      await this._performAction(renderedView.redirectTo);
     } else {
-      this._renderedView = rendering;
+      this._renderedView = renderedView;
     }
   }
 
-  async _renderStream(stream) {
-    const { emitter, action, params } = stream;
-    const changeCallback = async () => {
-      await this._performAction({ action, params });
+  async _renderResponseStream(responder) {
+    const listener = async rendering => {
+      this._renderedView = rendering;
     };
-    emitter.addListener(changeCallback);
-    await changeCallback();
+    await responder(listener);
   }
 
   _inspectView() {

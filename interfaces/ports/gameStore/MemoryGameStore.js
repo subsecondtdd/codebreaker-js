@@ -8,7 +8,7 @@ module.exports = class MemoryGameStore {
     this._games[game.gameId] = game;
     const listeners = this._listeners[game.gameId] || [];
     for (let i = 0; i < listeners.length; i++) {
-      await listeners[i].call(listeners[i]);
+      await listeners[i].call(listeners[i], game);
     }
   }
 
@@ -18,10 +18,18 @@ module.exports = class MemoryGameStore {
 
   makeGameChangeEmitter({ gameId }) {
     return {
+      gameId,
       addListener: listener => {
         this._listeners[gameId] = this._listeners[gameId] || [];
         this._listeners[gameId].push(listener);
       }
     };
+  }
+
+  async watchGame(gameId, onChange) {
+    const game = this._games[gameId];
+    await onChange(game);
+    this._listeners[gameId] = this._listeners[gameId] || [];
+    this._listeners[gameId].push(onChange);
   }
 };
