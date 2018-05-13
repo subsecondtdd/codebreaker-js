@@ -6,7 +6,8 @@ const {
   ports,
   sessions,
   controllers,
-  web
+  web,
+  browserApps
 } = require("../../interfaces");
 
 class World {
@@ -37,6 +38,11 @@ class World {
         Constructor
       })
     );
+    this._container.register({
+      role: "browserApps",
+      Constructor: browserApps,
+      scope: "singleton"
+    });
     this._container.register({
       role: "controllers",
       Constructor: controllers(this._container)

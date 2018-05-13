@@ -5,5 +5,6 @@ module.exports = {
   ports: require("./ports"),
   controllers: require("./controllers"),
   sessions: require("./sessions"),
-  web: require('./web')
+  web: require("./web"),
+  browserApps: require("./browserApps")
 };

@@ -1,3 +1,5 @@
+const eventually = require("./eventually");
+
 module.exports = class DomSession {
   constructor({ webAppDomRenderer }) {
     this._webAppDomRenderer = webAppDomRenderer;
@@ -32,6 +34,27 @@ module.exports = class DomSession {
       throw new Error(`Found ${submits.length} submit elements`);
     }
     const submit = submits[0];
+
+    const descriptionBeforeClicking = this.describeView();
     submit.click();
+    await eventually(async () => {
+      if (descriptionBeforeClicking === this.describeView()) {
+        throw new Error(
+          `Expected data-view-description to change from '${descriptionBeforeClicking}'`
+        );
+      }
+    });
+  }
+
+  describeView() {
+    const elements = this._element.querySelectorAll("[data-view-description]");
+    if (elements.length === 1) {
+      return elements[0].getAttribute("data-view-description");
+    } else if (elements.length === 0) {
+      return null;
+    }
+    throw new Error(
+      `Found ${elements.length} elements with [data-view-description]`
+    );
   }
 };
