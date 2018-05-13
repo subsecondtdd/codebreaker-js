@@ -9,6 +9,7 @@ module.exports = class PlayAsBreakerApp {
       }</label>)
       ${this.renderLinks(rendering.links)}
       ${this.renderData(rendering.data)}
+      ${this.renderForms(rendering.commands)}
       `;
     };
 
@@ -41,6 +42,36 @@ module.exports = class PlayAsBreakerApp {
         .join("") +
       "</span>"
     );
+  }
+
+  renderForms(commands) {
+    if (!commands) return "";
+    return (
+      "<div>" +
+      commands
+        .map(command => {
+          return this.renderForm(command);
+        })
+        .join("<br />") +
+      "</div>"
+    );
+  }
+
+  renderForm(command) {
+    switch (command.action) {
+      case "guessWord":
+        return `<form action="/games/${
+          command.params.gameId
+        }/guesses" data-action="guessWord">
+          <input type="text" name="guess" />
+          <input type="submit" value="Submit Guess" />
+        </form>
+        `;
+      default:
+        throw new Error(
+          `Unable to render form for command ${JSON.stringify(command)}`
+        );
+    }
   }
 
   generateLinkHref(link) {

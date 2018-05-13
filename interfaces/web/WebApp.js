@@ -73,6 +73,17 @@ module.exports = class WebApp {
         statusCode: 201,
         location: `/games/${rendering.redirectTo.params.gameId}/maker`
       };
+    } else if (path.match(/\/guesses$/)) {
+      // TODO: use a router
+      const gameId = path.split("/")[2];
+      const rendering = await this._performAction({
+        action: "guessWord",
+        params: Object.assign({}, params, { gameId })
+      });
+      return {
+        statusCode: 201,
+        location: `/games/${gameId}/breaker`
+      };
     } else {
       throw new Error(`POST '${path}' is not implemented`);
     }
