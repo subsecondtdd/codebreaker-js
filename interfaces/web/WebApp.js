@@ -34,6 +34,31 @@ module.exports = class WebApp {
           data-mount-browser-app="PlayAsMakerApp" data-event-source-url="${path +
             "/event-source"}"></script></body></html>`
       };
+    } else if (path.indexOf("/breaker/event-source") > -1) {
+      const gameId = path.match(/games\/([^/]+)/)[1];
+      const rendering = await this._performAction({
+        action: "playAsBreaker",
+        params: { gameId }
+      });
+      return {
+        statusCode: 200,
+        contentType: "text/event-stream",
+        stream: rendering
+      };
+    } else if (path.indexOf("/breaker") > -1) {
+      // TODO: use a router
+      const gameId = path.split("/")[2];
+      const rendering = await this._performAction({
+        action: "joinGame",
+        params: { gameId }
+      });
+      return {
+        statusCode: 200,
+        contentType: "text/html",
+        body: `<html><body><script src="mountPlayAsBreakerApp.js"
+          data-mount-browser-app="PlayAsBreakerApp" data-event-source-url="${path +
+            "/event-source"}"></script></body></html>`
+      };
     }
     throw new Error(`GET '${path}' is not implemented`);
   }

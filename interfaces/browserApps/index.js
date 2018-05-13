@@ -1,9 +1,11 @@
 const PlayAsMakerApp = require("./PlayAsMakerApp");
+const PlayAsBreakerApp = require("./PlayAsBreakerApp");
 
 module.exports = class BrowserApps {
   constructor() {
     this._apps = {
-      PlayAsMakerApp: new PlayAsMakerApp()
+      PlayAsMakerApp: new PlayAsMakerApp(),
+      PlayAsBreakerApp: new PlayAsBreakerApp()
     };
   }
 

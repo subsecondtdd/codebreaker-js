@@ -1,9 +1,9 @@
-module.exports = class PlayAsMakerApp {
+module.exports = class PlayAsBreakerApp {
   mount({ element, stream }) {
-    element.innerHTML = "Loading Maker App";
+    element.innerHTML = "Loading Breaker App";
 
     const listener = async rendering => {
-      element.innerHTML = `Maker App
+      element.innerHTML = `Breaker App
         (<label data-view-description="${rendering.description}"/>${
         rendering.description
       }</label>)
@@ -46,9 +46,6 @@ module.exports = class PlayAsMakerApp {
   generateLinkHref(link) {
     // TODO: use a router of some sort
     switch (link.action) {
-      case "joinGame":
-        return `/games/${link.params.gameId}/breaker`;
-        break;
       default:
         throw new Error(`Unable to generate link for ${JSON.stringify(link)}`);
     }

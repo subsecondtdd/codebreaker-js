@@ -6,10 +6,22 @@ module.exports = class DomSession {
   }
 
   async startSession() {
+    await this._ensureElement();
+    await this._webAppDomRenderer.renderWebAppInElement(this._element, "/");
+  }
+
+  async openLink(href) {
+    await this._ensureElement();
+    await this._webAppDomRenderer.renderWebAppInElement(this._element, href);
+  }
+
+  async _ensureElement() {
+    if (this._element) {
+      return;
+    }
     this._element = document.createElement("div");
     this._element.style.border = "1px solid green";
     document.body.appendChild(this._element);
-    await this._webAppDomRenderer.renderWebAppInElement(this._element);
   }
 
   async dispatchCommand({ action, params }) {
@@ -55,6 +67,28 @@ module.exports = class DomSession {
     }
     throw new Error(
       `Found ${elements.length} elements with [data-view-description]`
+    );
+  }
+
+  getVisibleLink({ action }) {
+    const selector = `a[data-action="${action}"]`;
+    const elements = this._element.querySelectorAll(selector);
+    if (elements.length === 1) {
+      return elements[0].getAttribute("href");
+    }
+    throw new Error(
+      `Found ${elements.length} elements with selector ${selector}`
+    );
+  }
+
+  getVisibleData(key) {
+    const selector = `[data-key="${key}"]`;
+    const elements = this._element.querySelectorAll(selector);
+    if (elements.length === 1) {
+      return elements[0].getAttribute("data-value");
+    }
+    throw new Error(
+      `Found ${elements.length} elements with selector ${selector}`
     );
   }
 };
