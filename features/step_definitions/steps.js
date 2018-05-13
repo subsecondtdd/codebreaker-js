@@ -72,13 +72,19 @@ When("{player} scores {int}", async function makerScores(maker, points) {
   await maker.scoreLatestGuess({ points, correct: false });
 });
 
-When("{player} scores the guess as correct", async function(maker) {
-  await maker.scoreLatestGuess({ points: 5, correct: true });
-});
+When(
+  "{player} scores the guess as correct",
+  async function makerScoresGuessAsCorrect(maker) {
+    await maker.scoreLatestGuess({ points: 5, correct: true });
+  }
+);
 
-When("{player} scores the guess as incorrect", async function(maker) {
-  await maker.scoreLatestGuess({ points: 5, correct: false });
-});
+When(
+  "{player} scores the guess as incorrect",
+  async function makerScoresGuessAsIncorrect(maker) {
+    await maker.scoreLatestGuess({ points: 5, correct: false });
+  }
+);
 
 Then(
   "{player} waits for a Breaker to join",
