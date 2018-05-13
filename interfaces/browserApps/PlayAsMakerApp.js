@@ -9,6 +9,7 @@ module.exports = class PlayAsMakerApp {
       }</label>)
       ${this.renderLinks(rendering.links)}
       ${this.renderData(rendering.data)}
+      ${this.renderForms(rendering.commands)}
       `;
     };
 
@@ -31,16 +32,39 @@ module.exports = class PlayAsMakerApp {
   }
 
   renderData(data) {
-    if (!data) return "";
+    // TODO: embed data in microformat
+    return `<br />Data: <pre data-role="data">${JSON.stringify(data)}</pre>`;
+  }
+
+  renderForms(commands) {
+    if (!commands) return "";
     return (
-      "<span>" +
-      Object.keys(data)
-        .map(key => {
-          return `<span data-key="${key}" data-value="${data[key]}" />`;
+      "<div>" +
+      commands
+        .map(command => {
+          return this.renderForm(command);
         })
-        .join("") +
-      "</span>"
+        .join("<br />") +
+      "</div>"
     );
+  }
+
+  renderForm(command) {
+    switch (command.action) {
+      case "scoreLatestGuess":
+        return `<form action="/games/${
+          command.params.gameId
+        }/scores" data-action="scoreLatestGuess">
+          <input type="text" name="points" />
+          <input type="checkbox" name="correct" value="1" /> Correct!
+          <input type="submit" value="Submit Score" />
+        </form>
+        `;
+      default:
+        throw new Error(
+          `Unable to render form for command ${JSON.stringify(command)}`
+        );
+    }
   }
 
   generateLinkHref(link) {

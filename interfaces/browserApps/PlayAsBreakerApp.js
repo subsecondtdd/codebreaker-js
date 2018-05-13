@@ -32,16 +32,8 @@ module.exports = class PlayAsBreakerApp {
   }
 
   renderData(data) {
-    if (!data) return "";
-    return (
-      "<span>" +
-      Object.keys(data)
-        .map(key => {
-          return `<span data-key="${key}" data-value="${data[key]}" />`;
-        })
-        .join("") +
-      "</span>"
-    );
+    // TODO: embed data in microformat
+    return `<br />Data: <pre data-role="data">${JSON.stringify(data)}</pre>`;
   }
 
   renderForms(commands) {

@@ -2,6 +2,7 @@ const baseURL = "http://web-app-dom-renderer";
 
 module.exports = class WebAppDomRenderer {
   constructor({ webApp, browserApps }) {
+    this._renderCount = 0;
     this._webApp = webApp;
     this._browserApps = browserApps;
     const base = document.createElement("base");
@@ -12,6 +13,7 @@ module.exports = class WebAppDomRenderer {
   async renderWebAppInElement(domElement, path = "/") {
     const response = await this._webApp.get(path);
     domElement.innerHTML = response.body;
+    domElement.setAttribute("data-render-count", this._renderCount++);
     const browserAppsToMount = domElement.querySelectorAll(
       "[data-mount-browser-app]"
     );
@@ -28,20 +30,21 @@ module.exports = class WebAppDomRenderer {
       });
     }
 
-    domElement.querySelectorAll("form").forEach(form => {
-      form.addEventListener("submit", event => {
-        event.preventDefault();
-        this.submitForm(event.target, domElement);
-      });
+    domElement.addEventListener("submit", event => {
+      event.preventDefault();
+      this.submitForm(event.target, domElement);
     });
   }
 
   async submitForm(form, domElement) {
     const path = form.action.substring(baseURL.length);
     const params = {};
-    const inputs = [].slice.apply(form.querySelectorAll('input[type="text"]'));
+    const inputs = [].slice.apply(
+      form.querySelectorAll('input[type="text"],input[type="checkbox"]')
+    );
     inputs.forEach(input => {
-      params[input.getAttribute("name")] = input.value;
+      const value = input.type === "text" ? input.value : !!input.checked;
+      params[input.getAttribute("name")] = value;
     });
     this._webApp.post(path, params).then(rendering => {
       this.renderWebAppInElement(domElement, rendering.location);

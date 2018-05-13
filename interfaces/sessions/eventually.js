@@ -2,7 +2,7 @@
 
 module.exports = function eventually(fn) {
   const originalStack = new Error(`Gave up waiting for ${fn.toString()}`).stack;
-  let remainingAttempts = 200;
+  let remainingAttempts = 10;
   const interval = 10;
   const attempt = () => new Promise(resolve => resolve(fn())).catch(reattempt);
   function reattempt(error) {

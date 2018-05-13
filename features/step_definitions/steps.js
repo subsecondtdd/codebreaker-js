@@ -117,7 +117,7 @@ Then("{player} is asked to score", function makerIsAskedToScore(maker) {
 Then("{player}'s guess is not submitted", function breakersGuessIsNotSubmitted(
   breaker
 ) {
-  assert.equal(breaker.describeView(), "guess not submitted");
+  assert.equal(breaker.describeView(), "waiting for breaker to guess word");
 });
 
 Then("{player}'s guess is submitted", function breakersGuessIsSubmitted(
