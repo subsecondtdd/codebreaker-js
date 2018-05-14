@@ -7,8 +7,8 @@ const {
   sessions,
   controllers,
   web,
-  browserApps
-} = require("../../interfaces");
+  domApps
+} = require("../../lib");
 
 class World {
   constructor() {
@@ -39,8 +39,8 @@ class World {
       })
     );
     this._container.register({
-      role: "browserApps",
-      Constructor: browserApps,
+      role: "domApps",
+      Constructor: domApps,
       scope: "singleton"
     });
     this._container.register({
