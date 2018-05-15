@@ -16,8 +16,7 @@ class World {
 
     const sessionFactories = {
       DomSession: controller => {
-        const session = new DirectSession({controller})
-        return new DomSession({render: renderDom(session)})
+        return new DomSession({render: renderDom(controller)})
       },
       DirectSession: controller => {
         return new DirectSession({controller})
