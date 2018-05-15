@@ -1,4 +1,4 @@
-const { setWorldConstructor } = require("cucumber");
+const {setWorldConstructor} = require("cucumber");
 const Player = require("./Player");
 const DirectSession = require("../../lib/ptb/DirectSession");
 const DomSession = require("../../lib/ptb/DomSession");
@@ -15,15 +15,21 @@ class World {
     if (this._cast[playerName]) return this._cast[playerName];
 
     const sessionFactories = {
-      DomSession: controller => new DomSession({ render: renderDom }),
-      DirectSession: controller => new DirectSession({ controller })
+      DomSession: controller => {
+        const session = new DirectSession({controller})
+        return new DomSession({render: renderDom(session)})
+      },
+      DirectSession: controller => {
+        return new DirectSession({controller})
+      }
     }
 
     const makeSession = sessionFactories[process.env.SESSION || 'DirectSession']
     const session = makeSession(this._controller);
-    const player = new Player({ session });
+    const player = new Player({session});
     this._cast[playerName] = player;
     return player;
   }
 }
+
 setWorldConstructor(World);
