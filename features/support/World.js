@@ -3,38 +3,7 @@ const Player = require("./Player");
 const DirectSession = require("../../lib/ptb/DirectSession");
 const DomSession = require("../../lib/ptb/DomSession");
 const CodeBreakerController = require("../../lib/CodeBreakerController");
-
-function renderDom({ rootElement }) {
-  rootElement.innerHTML = `
-    <div>
-      <form data-command="startGame">
-        <input name="secret" />
-      </form>
-    </div>
-    <div>
-      <form data-command="joinGame">
-      </form>
-    </div>
-    <div>
-      <form data-command="guess">
-        <input name="guess" />
-      </form>
-    </div>
-    <div>
-      <form data-command="score">
-        <input name="points" />
-      </form>
-    </div>
-    <div itemscope>
-      <div itemscope itemprop="gameState" itemtype="http://schema.org/Text">Score guess</div>
-      <ol itemscope itemprop="guessList" itemtype="http://schema.org/ItemList">
-        <li itemscope>
-          Points: <span itemprop="points" itemtype="http://schema.org/Integer">2</span>
-        </li>
-      </ol>
-    </div>
-  `
-}
+const renderDom = require('../../lib/dom/renderDom')
 
 class World {
   constructor() {
