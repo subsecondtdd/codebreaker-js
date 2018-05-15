@@ -3,13 +3,21 @@ module.exports = class Player {
     this._session = session;
   }
 
-  startGame({ secret }) {}
+  startGame({ secret }) {
+    this._session.dispatchCommand({ name: "startGame", params: { secret } });
+  }
 
-  joinGame() {}
+  joinGame() {
+    this._session.dispatchCommand({ name: "joinGame", params: {} });
+  }
 
-  guess({ guess }) {}
+  guess({ guess }) {
+    this._session.dispatchCommand({ name: "guess", params: { guess } });
+  }
 
-  score({ points }) {}
+  score({ points }) {
+    this._session.dispatchCommand({ name: "score", params: { points } });
+  }
 
   getGameState() {
     return this._session.getTestView("gameState");
