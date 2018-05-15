@@ -1,15 +1,17 @@
 module.exports = class Player {
-  startGame({secret}) {
-  }
+  startGame({ secret }) {}
 
-  joinGame() {
-  }
+  joinGame() {}
 
-  guess({guess}) {
+  guess({ guess }) {}
 
-  }
+  score({ points }) {}
 
   getGameState() {
-    return 'Score guess'
+    return "Score guess";
   }
-}
+
+  getGuessList() {
+    return [{ points: 2 }];
+  }
+};

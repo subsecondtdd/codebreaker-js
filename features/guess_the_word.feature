@@ -19,7 +19,7 @@ Feature: Guess the word
     Then the Maker is asked to score the guess
 
   Scenario: Maker scores a guess
-    Given the Breaker has made the first guess
+    Given the Breaker has made the first guess in the Maker's game
     When the Maker scores 2
     Then the Breaker sees the score 2
 
