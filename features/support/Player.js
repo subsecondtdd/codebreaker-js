@@ -1,4 +1,8 @@
 module.exports = class Player {
+  constructor({ session }) {
+    this._session = session;
+  }
+
   startGame({ secret }) {}
 
   joinGame() {}
@@ -8,10 +12,10 @@ module.exports = class Player {
   score({ points }) {}
 
   getGameState() {
-    return "Score guess";
+    return this._session.getTestView("gameState");
   }
 
   getGuessList() {
-    return [{ points: 2 }];
+    return this._session.getTestView("guessList");
   }
 };
