@@ -16,7 +16,7 @@ Feature: Guess the word
   Scenario: Breaker guesses a word
     Given the Breaker has joined the Maker's game
     When the Breaker makes a guess
-    Then the Maker is asked to score
+    Then the Maker is asked to score the guess
 
   Scenario: Maker scores a guess
     Given the Breaker has made the first guess
