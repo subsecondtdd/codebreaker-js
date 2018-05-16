@@ -6,6 +6,10 @@ Given("{player} has joined {player}'s game", function(breaker, maker) {
   breaker.joinGame();
 });
 
+Given('{player} has started a game with the word {string}', function (maker, secret) {
+  maker.startGame({ secret });
+})
+
 Given("{player} has made the first guess in {player}'s game", function(
   breaker,
   maker
@@ -19,6 +23,10 @@ When('{player} starts a game', function (maker) {
   maker.startGame({ secret: "stake" });
 })
 
+When('{player} joins {player}\'s game', function (breaker, maker) {
+  breaker.joinGame();
+})
+
 When("{player} scores {int}", function(maker, points) {
   maker.score({ points });
 });
@@ -30,6 +38,10 @@ When("{player} makes a guess", function(breaker) {
 Then('{player} waits for a Breaker to join', function (maker) {
   const gameState = maker.getGameState();
   assert.equal(gameState, "Waiting for breaker");
+})
+
+Then('{player} must guess a word with {int} characters', function (breaker, wordLength) {
+  assert.equal(breaker.getWordLength(), wordLength);
 })
 
 Then("{player} is asked to score the guess", function(maker) {

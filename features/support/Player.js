@@ -23,6 +23,10 @@ module.exports = class Player {
     return this._session.getTestView("gameState");
   }
 
+  getWordLength() {
+    return this._session.getTestView("wordLength");
+  }
+
   getGuessList() {
     return this._session.getTestView("guessList");
   }
