@@ -18,7 +18,7 @@ class World {
       DomSession: controller => {
         const rootElement = document.createElement('div')
         document.body.appendChild(rootElement)
-        const domApp = new DomApp({rootElement, controller, playerName})
+        const domApp = new DomApp({rootElement, controller})
         domApp.showIndex()
         return new DomSession({rootElement})
       },
