@@ -32,6 +32,6 @@ module.exports = class Player {
   }
 
   getErrorMessage() {
-    return this._session.getTestView("errorMessage");
+    return this._session.getErrorMessage();
   }
 };
