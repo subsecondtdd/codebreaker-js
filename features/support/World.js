@@ -3,7 +3,7 @@ const Player = require("./Player");
 const DirectSession = require("../../lib/ptb/DirectSession");
 const DomSession = require("../../lib/ptb/DomSession");
 const CodeBreakerController = require("../../lib/CodeBreakerController");
-const renderDom = require('../../lib/dom/renderDom')
+const DomApp = require('../../lib/dom/DomApp')
 
 class World {
   constructor() {
@@ -16,7 +16,11 @@ class World {
 
     const sessionFactories = {
       DomSession: controller => {
-        return new DomSession({render: renderDom(controller)})
+        const rootElement = document.createElement('div')
+        document.body.appendChild(rootElement)
+        const domApp = new DomApp({rootElement, controller, playerName})
+        domApp.showIndex()
+        return new DomSession({rootElement})
       },
       DirectSession: controller => {
         return new DirectSession({controller})
