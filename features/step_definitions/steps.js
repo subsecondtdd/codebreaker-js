@@ -35,6 +35,10 @@ When("{player} makes a guess", function(breaker) {
   breaker.guess({ guess: "spice" });
 });
 
+When('{player} guesses {string}', function (breaker, guess) {
+  breaker.guess({ guess });
+})
+
 Then('{player} waits for a Breaker to join', function (maker) {
   const gameState = maker.getGameState();
   assert.equal(gameState, "Waiting for breaker");
@@ -42,6 +46,10 @@ Then('{player} waits for a Breaker to join', function (maker) {
 
 Then('{player} must guess a word with {int} characters', function (breaker, wordLength) {
   assert.equal(breaker.getWordLength(), wordLength);
+})
+
+Then('{player} is told {string}', function (player, errorMessage) {
+  assert.equal(player.getErrorMessage(), errorMessage);
 })
 
 Then("{player} is asked to score the guess", function(maker) {
@@ -53,3 +61,8 @@ Then("{player} sees the score {int}", function(player, points) {
   const guessList = player.getGuessList();
   assert.equal(guessList[guessList.length - 1].points, points);
 });
+
+Then('{player}\'s guess is not submitted', function (player) {
+  const guessList = player.getGuessList();
+  assert.deepEqual(guessList, []);
+})

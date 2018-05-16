@@ -26,9 +26,10 @@ Feature: Guess the word
   # Guess must have length of secret word
 
   Scenario: Breaker guesses incorrect length
-    Given the Breaker has joined a game started with the word "pints"
+    Given the Breaker has joined the Maker's game
     When the Breaker guesses "pant"
-    Then the Breaker's guess is not submitted
+    Then the Breaker is told "Guess must have 5 letters"
+    And the Breaker's guess is not submitted
 
   Scenario: Breaker guesses correct length
     Given the Breaker has joined a game started with the word "smart"

@@ -30,4 +30,8 @@ module.exports = class Player {
   getGuessList() {
     return this._session.getTestView("guessList");
   }
+
+  getErrorMessage() {
+    return this._session.getTestView("errorMessage");
+  }
 };
