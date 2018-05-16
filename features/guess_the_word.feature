@@ -38,9 +38,4 @@ Feature: Guess the word
     And the Breaker has guessed "steak"
     When the Maker scores the guess as correct
     Then the Breaker sees that the game is over
-
-  Scenario: Breaker guesses incorrect word
-    Given the Breaker has joined a game started with the word "break"
-    When the Breaker guesses "brake"
-    And the Maker scores the guess as incorrect
-    Then the Breaker sees that the game is not over
+    
