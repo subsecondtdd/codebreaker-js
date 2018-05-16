@@ -19,6 +19,10 @@ Given("{player} has made the first guess in {player}'s game", function(
   breaker.guess({ guess: "limbo" });
 });
 
+Given('{player} has guessed {string}', function (breaker, guess) {
+  breaker.guess({ guess });
+})
+
 When('{player} starts a game', function (maker) {
   maker.startGame({ secret: "stake" });
 })
@@ -30,6 +34,10 @@ When('{player} joins {player}\'s game', function (breaker, maker) {
 When("{player} scores {int}", function(maker, points) {
   maker.score({ points });
 });
+
+When('{player} scores the guess as correct', function (maker) {
+  maker.scoreCorrect();
+})
 
 When("{player} makes a guess", function(breaker) {
   breaker.guess({ guess: "spice" });
@@ -65,4 +73,9 @@ Then("{player} sees the score {int}", function(player, points) {
 Then('{player}\'s guess is not submitted', function (player) {
   const guessList = player.getGuessList();
   assert.deepEqual(guessList, []);
+})
+
+Then('{player} sees that the game is over', function (breaker) {
+  const gameState = breaker.getGameState();
+  assert.equal(gameState, "Game over");
 })

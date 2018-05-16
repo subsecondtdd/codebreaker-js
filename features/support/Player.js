@@ -19,6 +19,10 @@ module.exports = class Player {
     this._session.dispatchCommand({ name: "score", params: { points } });
   }
 
+  scoreCorrect() {
+    this._session.dispatchCommand({ name: "scoreCorrect", params: {} });
+  }
+
   getGameState() {
     return this._session.getTestView("gameState");
   }

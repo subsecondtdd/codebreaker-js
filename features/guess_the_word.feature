@@ -31,17 +31,12 @@ Feature: Guess the word
     Then the Breaker is told "Guess must have 5 letters"
     And the Breaker's guess is not submitted
 
-  Scenario: Breaker guesses correct length
-    Given the Breaker has joined a game started with the word "smart"
-    When the Breaker guesses "pants"
-    Then the Breaker's guess is submitted
-
   # Finishing
 
   Scenario: Breaker guesses correct word
-    Given the Breaker has joined a game started with the word "steak"
-    When the Breaker guesses "steak"
-    And the Maker scores the guess as correct
+    Given the Breaker has joined the Maker's game
+    And the Breaker has guessed "steak"
+    When the Maker scores the guess as correct
     Then the Breaker sees that the game is over
 
   Scenario: Breaker guesses incorrect word
