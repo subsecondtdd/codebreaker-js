@@ -3,24 +3,24 @@ module.exports = class Player {
     this._session = session;
   }
 
-  startGame({ secret }) {
-    this._session.dispatchCommand({ name: "startGame", params: { secret } });
+  async startGame({ secret }) {
+    await this._session.dispatchCommand({ name: "startGame", params: { secret } });
   }
 
-  joinGame() {
-    this._session.dispatchCommand({ name: "joinGame", params: {} });
+  async joinGame() {
+    await this._session.dispatchCommand({ name: "joinGame", params: {} });
   }
 
-  guess({ guess }) {
-    this._session.dispatchCommand({ name: "guess", params: { guess } });
+  async guess({ guess }) {
+    await this._session.dispatchCommand({ name: "guess", params: { guess } });
   }
 
-  score({ points }) {
-    this._session.dispatchCommand({ name: "score", params: { points } });
+  async score({ points }) {
+    await this._session.dispatchCommand({ name: "score", params: { points } });
   }
 
-  scoreCorrect() {
-    this._session.dispatchCommand({ name: "scoreCorrect", params: {} });
+  async scoreCorrect() {
+    await this._session.dispatchCommand({ name: "scoreCorrect", params: {} });
   }
 
   getGameState() {
