@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "SESSION=DirectSession cucumber-electron && SESSION=DomSession cucumber-electron && SESSION=HTTPSession cucumber-electron"
+    "test": "SESSION=DirectSession cucumber-electron && SESSION=DomSession cucumber-electron && SESSION=HTTPSession cucumber-js"
   },
   "dependencies": {
     "cucumber": "^4.0.0",
@@ -14,5 +14,9 @@
     "express-extensions": "^1.0.0",
     "nanoid": "^1.0.2",
     "ssestream": "^1.0.1"
+  },
+  "devDependencies": {
+    "eventsource": "^1.0.5",
+    "node-fetch": "^2.1.2"
   }
 }
