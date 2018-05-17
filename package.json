@@ -4,8 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test":
-      "SESSION=DirectSession cucumber-electron && SESSION=DomSession cucumber-electron"
+    "test": "SESSION=DirectSession cucumber-electron && SESSION=DomSession cucumber-electron"
   },
   "dependencies": {
     "cucumber": "^4.0.0",
