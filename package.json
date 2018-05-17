@@ -4,12 +4,16 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test":
-      "SESSION=DirectSession cucumber-electron && SESSION=DomSession cucumber-electron"
+    "test": "SESSION=DirectSession cucumber-electron && SESSION=DomSession cucumber-electron"
   },
   "dependencies": {
     "cucumber": "^4.0.0",
     "cucumber-electron": "^2.4.0",
     "electron": "^1.8.4"
+  },
+  "devDependencies": {
+    "express": "^4.16.3",
+    "express-extensions": "^1.0.0",
+    "fetch": "^1.1.0"
   }
 }

@@ -3,11 +3,11 @@ const { Given, When, Then } = require("cucumber");
 
 Given("{player} has joined {player}'s game", function(breaker, maker) {
   maker.startGame({ secret: "steak" });
-  breaker.joinGame();
+  return breaker.joinGame();
 });
 
 Given('{player} has started a game with the word {string}', function (maker, secret) {
-  maker.startGame({ secret });
+  return maker.startGame({ secret });
 })
 
 Given("{player} has made the first guess in {player}'s game", function(
@@ -16,35 +16,35 @@ Given("{player} has made the first guess in {player}'s game", function(
 ) {
   maker.startGame({ secret: "magic" });
   breaker.joinGame();
-  breaker.guess({ guess: "limbo" });
+  return breaker.guess({ guess: "limbo" });
 });
 
 Given('{player} has guessed {string}', function (breaker, guess) {
-  breaker.guess({ guess });
+  return breaker.guess({ guess });
 })
 
 When('{player} starts a game', function (maker) {
-  maker.startGame({ secret: "stake" });
+  return maker.startGame({ secret: "stake" });
 })
 
 When('{player} joins {player}\'s game', function (breaker, maker) {
-  breaker.joinGame();
+  return breaker.joinGame();
 })
 
 When("{player} scores {int}", function(maker, points) {
-  maker.score({ points });
+  return maker.score({ points });
 });
 
 When('{player} scores the guess as correct', function (maker) {
-  maker.scoreCorrect();
+  return maker.scoreCorrect();
 })
 
 When("{player} makes a guess", function(breaker) {
-  breaker.guess({ guess: "spice" });
+  return breaker.guess({ guess: "spice" });
 });
 
 When('{player} guesses {string}', function (breaker, guess) {
-  breaker.guess({ guess });
+  return breaker.guess({ guess });
 })
 
 Then('{player} waits for a Breaker to join', function (maker) {
