@@ -1,0 +1,12 @@
+# TODO
+
+- server.js?
+  - shutdown webservers
+  - 1 express app shared by both players
+- package client app
+- selenium?
+- persistence?
+- generate game ids - maybe this is the failing test
+- different views for breakers and makers
+- real, hosted game
+
