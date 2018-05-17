@@ -43,6 +43,7 @@ class World {
 
     const makeSession = sessionFactories[process.env.SESSION || 'DirectSession']
     const session = await makeSession(this._controller);
+    await session.start()
     const player = new Player({session});
     this._cast[playerName] = player;
     return player;

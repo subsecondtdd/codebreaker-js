@@ -11,6 +11,8 @@
     "cucumber-electron": "^2.4.0",
     "electron": "^1.8.4",
     "express": "^4.16.3",
-    "express-extensions": "^1.0.0"
+    "express-extensions": "^1.0.0",
+    "nanoid": "^1.0.2",
+    "ssestream": "^1.0.1"
   }
 }
