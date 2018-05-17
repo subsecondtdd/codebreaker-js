@@ -1,4 +1,4 @@
-const {setWorldConstructor} = require("cucumber");
+const {setWorldConstructor, After} = require("cucumber");
 const {WebServer} = require('express-extensions')
 const express = require('express')
 
@@ -14,6 +14,7 @@ class World {
   constructor() {
     this._cast = {};
     this._controller = new CodeBreakerController();
+    this._stoppables = []
   }
 
   async findOrCreatePlayer(playerName) {
@@ -34,6 +35,7 @@ class World {
 
         const webServer = new WebServer(app)
         const port = await webServer.listen(0)
+        this._stoppables.push(webServer)
         return new HTTPSession({ baseUrl: `http://localhost:${port}` })
       },
       DirectSession: async controller => {
@@ -44,10 +46,19 @@ class World {
     const makeSession = sessionFactories[process.env.SESSION || 'DirectSession']
     const session = await makeSession(this._controller);
     await session.start()
+    this._stoppables.push(session)
     const player = new Player({session});
     this._cast[playerName] = player;
     return player;
   }
+
+  async stop() {
+    await Promise.all(this._stoppables.map(s => s.stop()))
+  }
 }
+
+After(async function () {
+  await this.stop()
+})
 
 setWorldConstructor(World);
