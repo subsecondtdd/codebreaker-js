@@ -1,12 +1,12 @@
 {
   "name": "codebreaker-js",
   "version": "1.0.0",
-  "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "test": "SESSION=DirectSession cucumber-electron && SESSION=DomSession cucumber-electron && SESSION=HTTPSession cucumber-js"
+    "test": "SESSION=ControllerSession cucumber-js && SESSION=DomSession cucumber-electron && CONTROLLER=HTTPController cucumber-js && SESSION=DomSession CONTROLLER=HTTPController cucumber-electron"
   },
   "dependencies": {
+    "browserify-middleware": "^8.1.0",
     "cucumber": "^4.0.0",
     "cucumber-electron": "^2.4.0",
     "electron": "^1.8.4",

@@ -1,24 +1,34 @@
 const {setWorldConstructor, After} = require("cucumber");
-const {WebServer} = require('express-extensions')
-const express = require('express')
 
-const DirectSession = require("../../lib/ptb/DirectSession");
+const ControllerSession = require("../../lib/ptb/ControllerSession");
 const DomSession = require("../../lib/ptb/DomSession");
-const HTTPSession = require("../../lib/ptb/HTTPSession");
-const CodeBreakerController = require("../../lib/CodeBreakerController");
+const HTTPController = require("../../lib/controller/HTTPController");
+const DomainController = require("../../lib/controller/DomainController");
 const DomApp = require('../../lib/dom/DomApp')
-const makeExpressRouter = require("../../lib/httpServer/makeExpressRouter");
 const Player = require("./Player");
+const makeWebServer = require('../../lib/httpServer/makeWebServer')
 
 class World {
   constructor() {
     this._cast = {};
-    this._controller = new CodeBreakerController();
+    this._domainController = new DomainController();
     this._stoppables = []
   }
 
   async findOrCreatePlayer(playerName) {
     if (this._cast[playerName]) return this._cast[playerName];
+
+    const controllerFactories = {
+      DomainController: async () => {
+        return this._domainController
+      },
+      HTTPController: async () => {
+        const webServer = makeWebServer({controller: this._domainController})
+        const port = await webServer.listen(0)
+        this._stoppables.push(webServer)
+        return new HTTPController({baseUrl: `http://localhost:${port}`})
+      }
+    }
 
     const sessionFactories = {
       DomSession: async controller => {
@@ -28,25 +38,21 @@ class World {
         domApp.showIndex()
         return new DomSession({rootElement})
       },
-      HTTPSession: async controller => {
-        const app = express()
-        app.use(express.json())
-        app.use(makeExpressRouter({controller}))
-
-        const webServer = new WebServer(app)
-        const port = await webServer.listen(0)
-        this._stoppables.push(webServer)
-        return new HTTPSession({ baseUrl: `http://localhost:${port}` })
-      },
-      DirectSession: async controller => {
-        return new DirectSession({controller})
+      ControllerSession: async controller => {
+        return new ControllerSession({controller})
       }
     }
 
-    const makeSession = sessionFactories[process.env.SESSION || 'DirectSession']
-    const session = await makeSession(this._controller);
+    const makeController = controllerFactories[process.env.CONTROLLER || 'DomainController']
+    const controller = await makeController()
+    await controller.start()
+    this._stoppables.push(controller)
+
+    const makeSession = sessionFactories[process.env.SESSION || 'ControllerSession']
+    const session = await makeSession(controller);
     await session.start()
     this._stoppables.push(session)
+
     const player = new Player({session});
     this._cast[playerName] = player;
     return player;
