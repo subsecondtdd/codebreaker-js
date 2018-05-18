@@ -1,6 +1,7 @@
 module.exports = class Player {
   constructor({ session }) {
     this._session = session;
+    this._version = 0
   }
 
   async startGame({ secret }) {
