@@ -1,4 +1,10 @@
 const {setWorldConstructor, After} = require("cucumber");
+if (typeof EventSource === 'undefined') {
+  global.EventSource = require('eventsource')
+}
+if (typeof fetch === 'undefined') {
+  global.fetch = require('node-fetch')
+}
 
 const ControllerSession = require("../../lib/ptb/ControllerSession");
 const DomSession = require("../../lib/ptb/DomSession");
@@ -26,7 +32,11 @@ class World {
         const webServer = makeWebServer({controller: this._domainController, serveClientApp: false})
         const port = await webServer.listen(0)
         this._stoppables.push(webServer)
-        return new HTTPController({baseUrl: `http://localhost:${port}`})
+        return new HTTPController({
+          baseUrl: `http://localhost:${port}`,
+          fetch: fetch.bind(global),
+          EventSource
+        })
       }
     }
 
