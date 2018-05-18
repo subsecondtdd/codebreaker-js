@@ -3,7 +3,7 @@ const makeWebServer = require('./lib/httpServer/makeWebServer')
 
 async function start() {
   const controller = new DomainController()
-  const webServer = makeWebServer({controller})
+  const webServer = makeWebServer({controller, serveClientApp: true})
   return webServer.listen(parseInt(process.env.PORT || '8997'))
 }
 

@@ -23,7 +23,7 @@ class World {
         return this._domainController
       },
       HTTPController: async () => {
-        const webServer = makeWebServer({controller: this._domainController})
+        const webServer = makeWebServer({controller: this._domainController, serveClientApp: false})
         const port = await webServer.listen(0)
         this._stoppables.push(webServer)
         return new HTTPController({baseUrl: `http://localhost:${port}`})
@@ -59,7 +59,7 @@ class World {
   }
 
   async stop() {
-    await Promise.all(this._stoppables.map(s => s.stop()))
+    await Promise.all(this._stoppables.reverse().map(s => s.stop()))
   }
 }
 
