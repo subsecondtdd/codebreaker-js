@@ -9,7 +9,7 @@ Feature: Guess the word
   Scenario: Breaker joins a game
     Given the Maker has started a game with the word "silky"
     When the Breaker joins the Maker's game
-    Then the Breaker must guess a word with 5 characters
+    Then the Breaker must guess a word with 5 letters
 
   # Turn based
 
@@ -38,4 +38,3 @@ Feature: Guess the word
     And the Breaker has guessed "steak"
     When the Maker scores the guess as correct
     Then the Breaker sees that the game is over
-    

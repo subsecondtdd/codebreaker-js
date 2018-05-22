@@ -52,7 +52,7 @@ Then('{player} waits for a Breaker to join', function (maker) {
   assert.equal(gameState, "Waiting for breaker");
 })
 
-Then('{player} must guess a word with {int} characters', function (breaker, wordLength) {
+Then('{player} must guess a word with {int} letters', function (breaker, wordLength) {
   assert.equal(breaker.getWordLength(), wordLength);
 })
 
