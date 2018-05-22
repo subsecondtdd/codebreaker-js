@@ -42,8 +42,11 @@ class World {
 
     const sessionFactories = {
       DomSession: async controller => {
+        const playerElement = document.createElement('div')
+        playerElement.innerHTML = `<div>${playerName}</div>`
+        document.body.appendChild(playerElement)
         const rootElement = document.createElement('div')
-        document.body.appendChild(rootElement)
+        playerElement.appendChild(rootElement)
         const domApp = new DomApp({rootElement, controller})
         domApp.showIndex()
         return new DomSession({rootElement})
