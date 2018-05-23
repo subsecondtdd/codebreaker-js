@@ -6,6 +6,7 @@
 - generate game ids - maybe this is the failing test
 - different views for breakers and makers
 - real, hosted game
+- record test results / timestamps in logfile metrics
 
 # Bugs
 
