@@ -6,8 +6,8 @@ if (typeof fetch === 'undefined') {
   global.fetch = require('node-fetch')
 }
 
-const ControllerSession = require("../../lib/ptb/ControllerSession");
-const DomSession = require("../../lib/ptb/DomSession");
+const ControllerSession = require("./sessions/ControllerSession");
+const DomSession = require("./sessions/DomSession");
 const HTTPController = require("../../lib/controller/HTTPController");
 const DomainController = require("../../lib/controller/DomainController");
 const DomApp = require('../../lib/dom/DomApp')

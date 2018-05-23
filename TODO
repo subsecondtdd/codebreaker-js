@@ -7,3 +7,15 @@
 - different views for breakers and makers
 - real, hosted game
 
+# Bugs
+
+## High pri
+
+- No games to join
+  - Join should not be enabled
+
+## Lo pri
+
+- No games to join
+  - Should get error message if you join and there are no games (race cond)  
+- Two people can join same game (race condition)
