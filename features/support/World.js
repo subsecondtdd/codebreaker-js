@@ -76,7 +76,9 @@ class World {
   }
 
   async stop() {
-    await Promise.all(this._stoppables.reverse().map(s => s.stop()))
+    for(const stoppable of this._stoppables.reverse()) {
+      await stoppable.stop()
+    }
   }
 }
 

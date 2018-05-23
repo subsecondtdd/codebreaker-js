@@ -1004,14 +1004,13 @@ expand-tilde@^1.2.2:
   dependencies:
     os-homedir "^1.0.1"
 
-express-extensions@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/express-extensions/-/express-extensions-1.0.0.tgz#970a9fae4d32e508456bc106e2d08684c9ae674b"
+express-extensions@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/express-extensions/-/express-extensions-1.0.1.tgz#6eaf777d18b164ab8f152ad62927c4b5861febe8"
   dependencies:
-    express "^4.16.2"
     util.promisify "^1.0.0"
 
-express@^4.16.2, express@^4.16.3:
+express@^4.16.3:
   version "4.16.3"
   resolved "https://registry.yarnpkg.com/express/-/express-4.16.3.tgz#6af8a502350db3246ecc4becf6b5a34d22f7ed53"
   dependencies:
