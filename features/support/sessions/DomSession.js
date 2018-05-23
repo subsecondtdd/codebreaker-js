@@ -26,8 +26,18 @@ module.exports = class DomSession {
       if (!input) throw new Error(`No input[name="${param}"]`)
       input.value = params[param]
     }
-    const submit = form.querySelector('input[type="submit"]')
-    submit.click()
+
+    // Wait for a rerender after submitting the form
+    return new Promise(resolve => {
+      const observer = new MutationObserver(() => {
+        observer.disconnect()
+        resolve()
+      })
+      observer.observe(this._rootElement, { childList: true })
+
+      const submit = form.querySelector('input[type="submit"]')
+      submit.click()
+    })
   }
 
   getTestView(name) {

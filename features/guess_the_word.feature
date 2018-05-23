@@ -8,7 +8,7 @@ Feature: Guess the word
 
   Scenario: Breaker joins a game
     Given the Maker has started a game with the word "silky"
-    When the Breaker joins the Maker's game
+    When the Breaker joins a game
     Then the Breaker must guess a word with 5 letters
 
   # Turn based
@@ -27,7 +27,7 @@ Feature: Guess the word
 
   Scenario: Breaker guesses incorrect length
     Given the Breaker has joined the Maker's game
-    When the Breaker guesses incorrect length "pant"
+    When the Breaker guesses "pant"
     Then the Breaker is told "Guess must have 5 letters"
     And the Breaker's guess is not submitted
 
