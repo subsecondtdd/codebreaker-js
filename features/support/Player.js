@@ -23,6 +23,10 @@ module.exports = class Player {
     await this._session.dispatchCommand({ name: "scoreCorrect", params: {} });
   }
 
+  getGameListVersion() {
+    return this._session.getTestView("gameListVersion");
+  }
+
   getGameState() {
     return this._session.getTestView("gameState");
   }
