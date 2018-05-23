@@ -71,6 +71,10 @@ class World {
     return player;
   }
 
+  async castHas({ gameVersion }) {
+    await Promise.all(Object.values(this._cast).map(player => player.waitFor({ gameVersion })))
+  }
+
   async stop() {
     await Promise.all(this._stoppables.reverse().map(s => s.stop()))
   }

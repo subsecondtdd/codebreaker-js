@@ -1,30 +1,43 @@
 module.exports = class Player {
-  constructor({ session }) {
+  constructor({session}) {
     this._session = session;
   }
 
-  async startGame({ secret }) {
-    await this._session.dispatchCommand({ name: "startGame", params: { secret } });
+  async startGame({secret}) {
+    await this._session.dispatchCommand({name: "startGame", params: {secret}});
   }
 
   async joinGame() {
-    await this._session.dispatchCommand({ name: "joinGame", params: {} });
+    await this._session.dispatchCommand({name: "joinGame", params: {}});
   }
 
-  async guess({ guess }) {
-    await this._session.dispatchCommand({ name: "guess", params: { guess } });
+  async guess({guess}) {
+    await this._session.dispatchCommand({name: "guess", params: {guess}});
   }
 
-  async score({ points }) {
-    await this._session.dispatchCommand({ name: "score", params: { points } });
+  async score({points}) {
+    await this._session.dispatchCommand({name: "score", params: {points}});
   }
 
   async scoreCorrect() {
-    await this._session.dispatchCommand({ name: "scoreCorrect", params: {} });
+    await this._session.dispatchCommand({name: "scoreCorrect", params: {}});
   }
 
-  getGameListVersion() {
-    return this._session.getTestView("gameListVersion");
+  waitFor({gameVersion}) {
+    return new Promise(resolve => {
+      this._session.onResult(() => {
+        try {
+          if (this._session.getTestView("gameVersion") === gameVersion)
+            resolve()
+        } catch(err) {
+          // NOOP
+        }
+      })
+    })
+  }
+
+  getGameVersion() {
+    return this._session.getTestView("gameVersion");
   }
 
   getGameState() {

@@ -27,7 +27,7 @@ Feature: Guess the word
 
   Scenario: Breaker guesses incorrect length
     Given the Breaker has joined the Maker's game
-    When the Breaker guesses "pant"
+    When the Breaker guesses incorrect length "pant"
     Then the Breaker is told "Guess must have 5 letters"
     And the Breaker's guess is not submitted
 

@@ -1,12 +1,20 @@
 module.exports = class DomSession {
   constructor({rootElement}) {
     this._rootElement = rootElement;
+    this._listeners = []
+    this._observer = new MutationObserver(() => {
+      for(const listener of this._listeners) {
+        listener()
+      }
+    });
   }
 
   async start() {
+    this._observer.observe(this._rootElement, { childList: true })
   }
 
   async stop() {
+    this._observer.disconnect()
   }
 
   dispatchCommand({name, params}) {
@@ -19,20 +27,16 @@ module.exports = class DomSession {
       input.value = params[param]
     }
     const submit = form.querySelector('input[type="submit"]')
-
-    return new Promise(resolve => {
-      const updated = () => {
-        this._rootElement.removeEventListener('updated', updated)
-        resolve()
-      }
-      this._rootElement.addEventListener('updated', updated)
-
-      submit.click()
-    })
+    submit.click()
   }
 
   getTestView(name) {
     return getMicroDataFromElement(this._rootElement)[name]
+  }
+
+  onResult(fn) {
+    fn()
+    this._listeners.push(fn)
   }
 };
 

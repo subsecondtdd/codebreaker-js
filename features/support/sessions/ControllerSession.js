@@ -15,9 +15,14 @@ module.exports = class ControllerSession {
     params = Object.assign({}, params, {gameId})
     const result = await this._controller.dispatch({name, params})
     if (result.subscribe) {
+      // TODO call listeners
       result.subscribe(result => this._result = result)
     }
     this._result = result
+  }
+
+  async onResult(fn) {
+    fn()
   }
 
   getTestView(name) {
