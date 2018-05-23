@@ -29,11 +29,14 @@ class World {
         return this._domainController
       },
       HTTPController: async () => {
-        const webServer = makeWebServer({controller: this._domainController, serveClientApp: false})
-        const port = await webServer.listen(0)
-        this._stoppables.push(webServer)
+        if (!this._baseUrl) {
+          const webServer = makeWebServer({controller: this._domainController, serveClientApp: false})
+          const port = await webServer.listen(0)
+          this._stoppables.push(webServer)
+          this._baseUrl = `http://localhost:${port}`;
+        }
         return new HTTPController({
-          baseUrl: `http://localhost:${port}`,
+          baseUrl: this._baseUrl,
           fetch: fetch.bind(global),
           EventSource
         })
@@ -71,12 +74,12 @@ class World {
     return player;
   }
 
-  async castHas({ gameVersion }) {
-    await Promise.all(Object.values(this._cast).map(player => player.waitFor({ gameVersion })))
+  async castHas({gameVersion}) {
+    await Promise.all(Object.values(this._cast).map(player => player.waitFor({gameVersion})))
   }
 
   async stop() {
-    for(const stoppable of this._stoppables.reverse()) {
+    for (const stoppable of this._stoppables.reverse()) {
       await stoppable.stop()
     }
   }
