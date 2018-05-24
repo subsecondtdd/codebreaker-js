@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "🥒"
+SESSION=ControllerSession CONTROLLER=DomainController node node_modules/.bin/cucumber-js "$@"

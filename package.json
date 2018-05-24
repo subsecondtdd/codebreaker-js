@@ -3,12 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "pretty": "pretty-quick --staged",
-    "test": "SESSION=ControllerSession cucumber-js -p ci && SESSION=DomSession cucumber-electron -p ci && CONTROLLER=HTTPController cucumber-js -p ci  && SESSION=DomSession CONTROLLER=HTTPController cucumber-electron -p ci",
-    "test-domain": "cucumber-js",
-    "test-dom": "SESSION=DomSession cucumber-electron",
-    "test-http": "CONTROLLER=HTTPController cucumber-js",
-    "test-http-dom": "CONTROLLER=HTTPController SESSION=DomSession cucumber-electron"
+    "test": "./cucumber && ./cucumber-dom && ./cucumber-http && ./cucumber-dom-http"
   },
   "dependencies": {
     "browserify-middleware": "^8.1.0",

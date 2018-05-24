@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "🥒 DOM + HTTP"
+SESSION=DomSession CONTROLLER=HTTPController node node_modules/.bin/cucumber-electron "$@"

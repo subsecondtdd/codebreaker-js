@@ -1,6 +1,5 @@
 # TODO
 
-- individual npm targets for each assembly
 - selenium?
 - persistence?
 - generate game ids - maybe this is the failing test
