@@ -1,3 +1,6 @@
+/**
+ * The test contract. Tests (step definitions) only interact with the system via player objects.
+ */
 module.exports = class Player {
   constructor({session}) {
     this._session = session;

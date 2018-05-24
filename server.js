@@ -1,9 +1,11 @@
+const {WebServer} = require('express-extensions')
 const DomainController = require('./lib/controller/DomainController')
-const makeWebServer = require('./lib/httpServer/makeWebServer')
+const makeWebApp = require('./lib/httpServer/makeWebApp')
 
 async function start() {
   const controller = new DomainController()
-  const webServer = makeWebServer({controller, serveClientApp: true})
+  const app = makeWebApp({controller, serveClientApp: true})
+  const webServer = new WebServer(app)
   return webServer.listen(parseInt(process.env.PORT || '8997'))
 }
 

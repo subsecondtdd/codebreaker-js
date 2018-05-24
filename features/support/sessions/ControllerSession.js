@@ -1,3 +1,6 @@
+/**
+ * A session that talks directly to a controller, without any UI in-between
+ */
 module.exports = class ControllerSession {
   constructor({controller}) {
     this._controller = controller
@@ -11,8 +14,10 @@ module.exports = class ControllerSession {
   }
 
   async dispatchCommand({name, params}) {
+    // add gameId to the supplied params
     const {gameId} = (this._result && this._result.data && this._result.data) || {}
     params = Object.assign({}, params, {gameId})
+
     const result = await this._controller.dispatch({name, params})
     if (result.subscribe) {
       // TODO call listeners

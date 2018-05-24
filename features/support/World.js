@@ -1,18 +1,19 @@
+const {WebServer} = require('express-extensions')
 const {setWorldConstructor, After} = require("cucumber");
-if (typeof EventSource === 'undefined') {
-  global.EventSource = require('eventsource')
-}
-if (typeof fetch === 'undefined') {
-  global.fetch = require('node-fetch')
-}
-
 const ControllerSession = require("./sessions/ControllerSession");
 const DomSession = require("./sessions/DomSession");
 const HTTPController = require("../../lib/controller/HTTPController");
 const DomainController = require("../../lib/controller/DomainController");
 const DomApp = require('../../lib/dom/DomApp')
 const Player = require("./Player");
-const makeWebServer = require('../../lib/httpServer/makeWebServer')
+const makeWebApp = require('../../lib/httpServer/makeWebApp')
+
+if (typeof EventSource === 'undefined') {
+  global.EventSource = require('eventsource')
+}
+if (typeof fetch === 'undefined') {
+  global.fetch = require('node-fetch')
+}
 
 class World {
   constructor() {
@@ -30,7 +31,8 @@ class World {
       },
       HTTPController: async () => {
         if (!this._baseUrl) {
-          const webServer = makeWebServer({controller: this._domainController, serveClientApp: false})
+          const app = makeWebApp({controller: this._domainController, serveClientApp: false})
+          const webServer = new WebServer(app)
           const port = await webServer.listen(0)
           this._stoppables.push(webServer)
           this._baseUrl = `http://localhost:${port}`;

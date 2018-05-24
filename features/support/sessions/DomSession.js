@@ -1,3 +1,6 @@
+/**
+ * A session that talks to a DOM
+ */
 module.exports = class DomSession {
   constructor({rootElement}) {
     this._rootElement = rootElement;
