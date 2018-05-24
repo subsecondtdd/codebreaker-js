@@ -1,4 +1,4 @@
 module.exports = {
-  default: "-f node_modules/cucumber-pretty",
-  ci: "-f progress"
+  default: "--format node_modules/cucumber-pretty",
+  ci: "--format progress"
 }
