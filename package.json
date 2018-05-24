@@ -4,7 +4,11 @@
   "license": "MIT",
   "scripts": {
     "pretty": "pretty-quick --staged",
-    "test": "SESSION=ControllerSession cucumber-js && SESSION=DomSession cucumber-electron && CONTROLLER=HTTPController cucumber-js && SESSION=DomSession CONTROLLER=HTTPController cucumber-electron"
+    "test": "SESSION=ControllerSession cucumber-js && SESSION=DomSession cucumber-electron && CONTROLLER=HTTPController cucumber-js && SESSION=DomSession CONTROLLER=HTTPController cucumber-electron",
+    "test-domain": "cucumber-js",
+    "test-dom": "SESSION=DomSession cucumber-electron",
+    "test-http": "CONTROLLER=HTTPController cucumber-js",
+    "test-http-dom": "CONTROLLER=HTTPController SESSION=DomSession cucumber-electron"
   },
   "dependencies": {
     "browserify-css": "^0.14.0",
