@@ -1,11 +1,11 @@
-const {WebServer} = require('express-extensions')
-const {setWorldConstructor, After} = require("cucumber");
-const ControllerSession = require("./sessions/ControllerSession");
-const DomSession = require("./sessions/DomSession");
-const HTTPController = require("../../lib/controller/HTTPController");
-const DomainController = require("../../lib/controller/DomainController");
+const { WebServer } = require('express-extensions')
+const { setWorldConstructor, After } = require('cucumber')
+const ControllerSession = require('./sessions/ControllerSession')
+const DomSession = require('./sessions/DomSession')
+const HTTPController = require('../../lib/controller/HTTPController')
+const DomainController = require('../../lib/controller/DomainController')
 const DomApp = require('../../lib/dom/DomApp')
-const Player = require("./Player");
+const Player = require('./Player')
 const makeWebApp = require('../../lib/httpServer/makeWebApp')
 
 if (typeof EventSource === 'undefined') {
@@ -17,13 +17,13 @@ if (typeof fetch === 'undefined') {
 
 class World {
   constructor() {
-    this._cast = {};
-    this._domainController = new DomainController();
+    this._cast = {}
+    this._domainController = new DomainController()
     this._stoppables = []
   }
 
   async findOrCreatePlayer(playerName) {
-    if (this._cast[playerName]) return this._cast[playerName];
+    if (this._cast[playerName]) return this._cast[playerName]
 
     const controllerFactories = {
       DomainController: async () => {
@@ -31,18 +31,21 @@ class World {
       },
       HTTPController: async () => {
         if (!this._baseUrl) {
-          const app = makeWebApp({controller: this._domainController, serveClientApp: false})
+          const app = makeWebApp({
+            controller: this._domainController,
+            serveClientApp: false,
+          })
           const webServer = new WebServer(app)
           const port = await webServer.listen(0)
           this._stoppables.push(webServer)
-          this._baseUrl = `http://localhost:${port}`;
+          this._baseUrl = `http://localhost:${port}`
         }
         return new HTTPController({
           baseUrl: this._baseUrl,
           fetch: fetch.bind(global),
-          EventSource
+          EventSource,
         })
-      }
+      },
     }
 
     const sessionFactories = {
@@ -52,32 +55,36 @@ class World {
         document.body.appendChild(playerElement)
         const rootElement = document.createElement('div')
         playerElement.appendChild(rootElement)
-        const domApp = new DomApp({rootElement, controller})
+        const domApp = new DomApp({ rootElement, controller })
         domApp.showIndex()
-        return new DomSession({rootElement})
+        return new DomSession({ rootElement })
       },
       ControllerSession: async controller => {
-        return new ControllerSession({controller})
-      }
+        return new ControllerSession({ controller })
+      },
     }
 
-    const makeController = controllerFactories[process.env.CONTROLLER || 'DomainController']
+    const makeController =
+      controllerFactories[process.env.CONTROLLER || 'DomainController']
     const controller = await makeController()
     await controller.start()
     this._stoppables.push(controller)
 
-    const makeSession = sessionFactories[process.env.SESSION || 'ControllerSession']
-    const session = await makeSession(controller);
+    const makeSession =
+      sessionFactories[process.env.SESSION || 'ControllerSession']
+    const session = await makeSession(controller)
     await session.start()
     this._stoppables.push(session)
 
-    const player = new Player({session});
-    this._cast[playerName] = player;
-    return player;
+    const player = new Player({ session })
+    this._cast[playerName] = player
+    return player
   }
 
-  async castHas({gameVersion}) {
-    await Promise.all(Object.values(this._cast).map(player => player.waitFor({gameVersion})))
+  async castHas({ gameVersion }) {
+    await Promise.all(
+      Object.values(this._cast).map(player => player.waitFor({ gameVersion }))
+    )
   }
 
   async stop() {
@@ -87,8 +94,8 @@ class World {
   }
 }
 
-After(async function () {
+After(async function() {
   await this.stop()
 })
 
-setWorldConstructor(World);
+setWorldConstructor(World)

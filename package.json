@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
+    "pretty": "pretty-quick --staged",
     "test": "SESSION=ControllerSession cucumber-js && SESSION=DomSession cucumber-electron && CONTROLLER=HTTPController cucumber-js && SESSION=DomSession CONTROLLER=HTTPController cucumber-electron"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
   },
   "devDependencies": {
     "eventsource": "^1.0.5",
-    "node-fetch": "^2.1.2"
+    "node-fetch": "^2.1.2",
+    "prettier": "^1.12.1"
   }
 }
