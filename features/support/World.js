@@ -2,11 +2,16 @@ const { WebServer } = require('express-extensions')
 const { setWorldConstructor, After } = require('cucumber')
 const ControllerSession = require('./sessions/ControllerSession')
 const DomSession = require('./sessions/DomSession')
+const WebDriverSession = require('./sessions/WebDriverSession')
 const HTTPController = require('../../lib/controller/HTTPController')
 const DomainController = require('../../lib/controller/DomainController')
 const DomApp = require('../../lib/dom/DomApp')
 const Player = require('./Player')
 const makeWebApp = require('../../lib/httpServer/makeWebApp')
+
+const {setDefaultTimeout} = require('cucumber')
+
+// setDefaultTimeout(5 * 60 * 1000)
 
 if (typeof EventSource === 'undefined') {
   global.EventSource = require('eventsource')
@@ -33,7 +38,7 @@ class World {
         if (!this._baseUrl) {
           const app = makeWebApp({
             controller: this._domainController,
-            serveClientApp: false,
+            serveClientApp: process.env.SESSION === 'WebDriverSession',
           })
           const webServer = new WebServer(app)
           const port = await webServer.listen(0)
@@ -61,6 +66,9 @@ class World {
       },
       ControllerSession: async controller => {
         return new ControllerSession({ controller })
+      },
+      WebDriverSession: async controller => {
+        return new WebDriverSession({ baseUrl: this._baseUrl })
       },
     }
 

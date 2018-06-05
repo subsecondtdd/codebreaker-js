@@ -5,7 +5,6 @@
   "scripts": {
     "test": "./cucumber && ./cucumber-dom && ./cucumber-http && ./cucumber-dom-http",
     "test-win": ".\\cucumber.cmd && .\\cucumber-dom.cmd && .\\cucumber-http.cmd && .\\cucumber-dom-http.cmd"
-
   },
   "dependencies": {
     "browserify-middleware": "^8.1.0",
@@ -17,11 +16,12 @@
     "ssestream": "^1.0.1"
   },
   "devDependencies": {
-    "cucumber-pretty": "^1.4.4",
     "cucumber": "^4.2.1",
     "cucumber-electron": "^2.4.0",
+    "cucumber-pretty": "^1.4.4",
     "eventsource": "^1.0.5",
     "node-fetch": "^2.1.2",
-    "prettier": "^1.12.1"
+    "prettier": "^1.12.1",
+    "selenium-webdriver": "^4.0.0-alpha.1"
   }
 }

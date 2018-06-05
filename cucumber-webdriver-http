@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "🥒 WebDriver + HTTP"
+SESSION=WebDriverSession CONTROLLER=HTTPController node node_modules/.bin/cucumber-electron "$@"

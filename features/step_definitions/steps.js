@@ -2,9 +2,13 @@ const assert = require('assert')
 const { Given, When, Then } = require('cucumber')
 
 Given("{player} has joined {player}'s game", async function(breaker, maker) {
+  console.log(1)
   await maker.startGame({ secret: 'steak' })
+  console.log(2)
   await maker.waitFor({ gameVersion: 0 })
+  console.log(3)
   await breaker.joinGame()
+  console.log(4)
   await this.castHas({ gameVersion: 1 })
 })
 
