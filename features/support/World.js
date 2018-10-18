@@ -42,9 +42,9 @@ class World {
       }
     }
     const actor = makers[process.env.ACTOR]()
-    // TODO: Don't start until the actor becomes "active"?
     await actor.start()
     this._actors[actorName] = actor
+    this._stoppables.push(actor)
     const sub = await pubSub.makeSubscriber()
     this._versionWatchers.push(new VersionWatcher(actor, sub))
     return actor

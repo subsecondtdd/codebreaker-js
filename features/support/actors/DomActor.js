@@ -22,12 +22,16 @@ module.exports = class DomActor extends BaseActor {
   start() {
     if (this._$root) throw new Error(`DomActor ${this._name} already started`)
 
-    const $actor = document.createElement('div')
-    $actor.innerHTML = `<h1>${this._name}</h1>`
-    document.body.appendChild($actor)
+    this._$actor = document.createElement('div')
+    this._$actor.innerHTML = `<h1>${this._name}</h1>`
+    document.body.appendChild(this._$actor)
     this._$root = document.createElement('div')
-    $actor.appendChild(this._$root)
+    this._$actor.appendChild(this._$root)
     mountApp(this._$root, this._codebreaker, this._pubSub)
+  }
+
+  stop() {
+    this._$actor.parentNode.removeChild(this._$actor)
   }
 
   // Domain-specific logic goes here...
