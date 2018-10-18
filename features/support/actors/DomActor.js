@@ -32,7 +32,7 @@ module.exports = class DomActor extends BaseActor {
   // Domain-specific logic goes here...
 
   joinGameCreatedBy(makerName) {
-    const $submit = this._$root.querySelector(`input[data-maker="${makerName}"]`)
+    const $submit = this._$root.querySelector(`[data-maker="${makerName}"]`)
     $submit.click()
   }
 
