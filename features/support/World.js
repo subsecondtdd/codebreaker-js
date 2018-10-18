@@ -3,42 +3,13 @@ const DirectActor = require('./actors/DirectActor')
 const DomActor = require('./actors/DomActor')
 const {MemoryPubSub} = require('pubsub-multi')
 const Codebreaker = require('../../lib/domain/Codebreaker')
+const VersionWatcher = require('./VersionWatcher')
 
 if (typeof EventSource === 'undefined') {
   global.EventSource = require('eventsource')
 }
 if (typeof fetch === 'undefined') {
   global.fetch = require('node-fetch')
-}
-
-class VersionWatcher {
-  constructor(subject, sub) {
-    if (!sub) throw new Error("No sub")
-    if (typeof sub.subscribe !== 'function') throw new Error(`No #subscribe for ${sub}`)
-    this._subject = subject
-    this._sub = sub
-  }
-
-  getVersion() {
-    return this._subject.getVersion()
-  }
-
-  async waitForVersion(expectedVersion) {
-    const synchronized = new Promise((resolve, reject) => {
-      if (this.getVersion() === expectedVersion) {
-        return resolve()
-      }
-      this._sub.subscribe('version', version => {
-        if (version === expectedVersion) resolve()
-      }).catch(reject)
-    })
-    const timedOut = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        reject(new Error(`Timed out waiting for ${this._subject} to get version ${expectedVersion}. Current version: ${this.getVersion()}`))
-      }, 200)
-    })
-    return Promise.race([synchronized, timedOut])
-  }
 }
 
 class World {
@@ -74,18 +45,7 @@ class World {
   }
 
   async synchronized() {
-    if (this._versionWatchers.length === 0) {
-      throw new Error("No versions to synchronize")
-    }
-    const versions = this._versionWatchers.map(versionWatcher => {
-      const version = versionWatcher.getVersion();
-      if (typeof version !== 'number' || isNaN(version)) throw new Error(`Not a version number: ${expectedVersion}`)
-      return version
-    });
-    const maxVersion = Math.max(...versions)
-    await Promise.all(
-      this._versionWatchers.map(versionWatcher => versionWatcher.waitForVersion(maxVersion))
-    )
+    return VersionWatcher.synchronized(this._versionWatchers)
   }
 
   async start() {

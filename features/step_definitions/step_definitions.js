@@ -13,6 +13,7 @@ When('{actor} joins {actor}\'s game', async function (breaker, maker) {
 })
 
 Then('{actor} must guess a word with {int} letters', async function (breaker, expectedLetterCount) {
+  await this.synchronized()
   // actualLetterCount is a "test view" (in this case, an integer)
   const actualLetterCount = breaker.getCurrentGameLetterCount()
   assert.equal(actualLetterCount, expectedLetterCount)
