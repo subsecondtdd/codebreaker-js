@@ -2,10 +2,10 @@ const {setWorldConstructor, Before, After} = require('cucumber')
 const DirectActor = require('./actors/DirectActor')
 const DomActor = require('./actors/DomActor')
 const {MemoryPubSub, EventSourcePubSub} = require('pubsub-multi')
-const Codebreaker = require('../../lib/domain/Codebreaker')
-const HttpCodebreaker = require('../../lib/domain/HttpCodebreaker')
+const Codebreaker = require('../../lib/codebreaker/Codebreaker')
+const HttpCodebreaker = require('../../lib/codebreaker/HttpCodebreaker')
 const VersionWatcher = require('./VersionWatcher')
-const makeWebApp = require('../../lib/httpServer/makeWebApp')
+const makeWebApp = require('../../lib/server/makeWebApp')
 const { WebServer } = require('express-extensions')
 
 if (typeof EventSource !== 'function') {

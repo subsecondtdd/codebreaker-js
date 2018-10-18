@@ -1,7 +1,7 @@
 const {WebServer} = require('express-extensions')
 const {MemoryPubSub} = require('pubsub-multi')
-const Codebreaker = require('./lib/domain/Codebreaker')
-const makeWebApp = require('./lib/httpServer/makeWebApp')
+const Codebreaker = require('./lib/codebreaker/Codebreaker')
+const makeWebApp = require('./lib/server/makeWebApp')
 
 async function start() {
   let codebreaker
