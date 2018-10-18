@@ -4,15 +4,16 @@ const Codebreaker = require('./lib/domain/Codebreaker')
 const makeWebApp = require('./lib/httpServer/makeWebApp')
 
 async function start() {
-  const pubSub = new MemoryPubSub()
-  const codebreaker = new Codebreaker(pubSub)
+  let codebreaker
+  const pubSub = new MemoryPubSub({version: () => codebreaker.getVersion()})
+  codebreaker = new Codebreaker(pubSub)
   const app = makeWebApp(codebreaker, pubSub, true)
   const webServer = new WebServer(app)
 
-  setTimeout(() => {
+  // setTimeout(() => {
     codebreaker.createGame(`Joe`, "steak")
     codebreaker.createGame(`Sal`, "nice")
-  }, 5000)
+  // }, 5000)
 
   return webServer.listen(parseInt(process.env.PORT || '8997'))
 }
