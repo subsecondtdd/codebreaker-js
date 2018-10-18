@@ -13,6 +13,8 @@ if (typeof EventSource !== 'function') {
 }
 if (typeof fetch !== 'function') {
   global.fetch = require('node-fetch')
+} else {
+  global.fetch = window.fetch.bind(window)
 }
 
 class World {

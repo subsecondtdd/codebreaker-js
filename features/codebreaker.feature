@@ -1,6 +1,6 @@
 Feature: Codebreaker
 
-  # Rule: A game starts when
+  # Rule: A game starts when the first person joins
   Scenario: Breaker joins Maker's 5 letter game
     Given Molly has started a game with the word "silky"
     When Benny joins Molly's game

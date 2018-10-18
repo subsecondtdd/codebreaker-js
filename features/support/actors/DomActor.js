@@ -1,3 +1,4 @@
+const getMicrodata = require('../getMicrodata')
 const mountApp = require('../../../lib/react/mountApp')
 const BaseActor = require('./BaseActor')
 
@@ -37,5 +38,6 @@ module.exports = class DomActor extends BaseActor {
   }
 
   getCurrentGameLetterCount() {
+    return getMicrodata(this._$root)['letterCount']
   }
 }
