@@ -1,3 +1,10 @@
+## Protocol
+
+These are the "resources".
+
+* `games` => [{id, maker, wordCount, breaker?}]
+* `games/id` => {id, maker, wordCount, breaker, turns: [{type: guess/score, guess/score}]}
+
 ## Domain Controllers
 
 A domain controller is a controller (in the MVC sense) that is

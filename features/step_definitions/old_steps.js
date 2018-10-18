@@ -31,8 +31,8 @@ Given('{player} has guessed {string}', async function(breaker, guess) {
   await this.castHas({ gameVersion: breaker.getGameVersion() })
 })
 
-When('{player} starts a game', async function(maker) {
-  await maker.startGame({ secret: 'stake' })
+When('{actor} starts a game', async function(actor) {
+  await actor.startGame({ secret: 'stake' })
 })
 
 When('{player} joins a game', async function(breaker) {

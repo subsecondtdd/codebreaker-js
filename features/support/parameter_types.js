@@ -7,3 +7,11 @@ defineParameterType({
     return this.findOrCreatePlayer(playerName)
   },
 })
+
+defineParameterType({
+  name: 'actor',
+  regexp: /[A-Z][a-z]+/,
+  transformer(actorName) {
+    return this.getActor(actorName)
+  },
+})
