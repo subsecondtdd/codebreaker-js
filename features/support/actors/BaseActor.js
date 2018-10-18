@@ -9,6 +9,9 @@ module.exports = class BaseActor {
     await sub.subscribe('version', version => this._version = version)
   }
 
+  stop() {
+  }
+
   getVersion() {
     return this._version
   }
