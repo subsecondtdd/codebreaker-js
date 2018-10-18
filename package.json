@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "scripts": {
-    "test": "./cucumber && ./cucumber-dom && ./cucumber-http && ./cucumber-dom-http",
-    "test-win": ".\\cucumber.cmd && .\\cucumber-dom.cmd && .\\cucumber-http.cmd && .\\cucumber-dom-http.cmd"
+    "test": "mocha && npm run cucumber",
+    "cucumber": "./cucumber && ./cucumber-dom && ./cucumber-http && ./cucumber-dom-http"
   },
   "dependencies": {
     "browserify-middleware": "^8.1.0",
