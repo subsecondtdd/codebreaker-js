@@ -16,7 +16,7 @@ module.exports = class VersionWatcher {
    * @param timeout how long to wait (defaults to 500ms)
    * @returns {Promise<void>}
    */
-  static async synchronized(versionWatchers, timeout=500) {
+  static synchronized(versionWatchers, timeout=1000) {
     if (versionWatchers.length === 0) {
       throw new Error("No versions to synchronize")
     }
@@ -26,7 +26,7 @@ module.exports = class VersionWatcher {
       return version
     });
     const maxVersion = Math.max(...versions)
-    await Promise.all(
+    return Promise.all(
       versionWatchers.map(versionWatcher => versionWatcher.waitForVersion(maxVersion, timeout))
     )
   }
@@ -46,7 +46,7 @@ module.exports = class VersionWatcher {
     })
     const timedOut = new Promise((resolve, reject) => {
       setTimeout(() => {
-        reject(new Error(`Timed out waiting for ${this._subject} to get version ${expectedVersion}. Current version: ${this.getVersion()}`))
+        reject(new Error(`Timed out waiting for ${this._subject.constructor.name} to get version ${expectedVersion}. Current version: ${this.getVersion()}`))
       }, timeout)
     })
     return Promise.race([synchronized, timedOut])

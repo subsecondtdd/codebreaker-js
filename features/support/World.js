@@ -3,7 +3,10 @@ const DirectActor = require('./actors/DirectActor')
 const DomActor = require('./actors/DomActor')
 const {MemoryPubSub} = require('pubsub-multi')
 const Codebreaker = require('../../lib/domain/Codebreaker')
+const HttpCodebreaker = require('../../lib/domain/HttpCodebreaker')
 const VersionWatcher = require('./VersionWatcher')
+const makeWebApp = require('../../lib/httpServer/makeWebApp')
+const { WebServer } = require('express-extensions')
 
 if (typeof EventSource === 'undefined') {
   global.EventSource = require('eventsource')
@@ -25,14 +28,15 @@ class World {
     if (this._actors[actorName]) return this._actors[actorName]
 
     const pubSub = this._pubSub
+    const codebreaker = await this.makeActorCodebreaker()
 
     const makers = {
       DirectActor: () => {
-        return new DirectActor(actorName, this._codebreaker, pubSub)
+        return new DirectActor(actorName, codebreaker, pubSub)
       },
 
       DomActor: () => {
-        return new DomActor(actorName, this._codebreaker, pubSub)
+        return new DomActor(actorName, codebreaker, pubSub)
       }
     }
     const actor = makers[process.env.ACTOR]()
@@ -42,6 +46,26 @@ class World {
     const sub = await pubSub.makeSubscriber()
     this._versionWatchers.push(new VersionWatcher(actor, sub))
     return actor
+  }
+
+  async makeActorCodebreaker() {
+    const makers = {
+      Codebreaker: () => {
+        return this._codebreaker
+      },
+
+      HttpCodebreaker: async () => {
+        const app = makeWebApp(this._codebreaker)
+        const webServer = new WebServer(app)
+        const port = await webServer.listen(0)
+        this._stoppables.push(webServer)
+        const baseUrl = `http://localhost:${port}`
+
+        return new HttpCodebreaker(baseUrl)
+      }
+    }
+
+    return await makers[process.env.API]()
   }
 
   async synchronized() {

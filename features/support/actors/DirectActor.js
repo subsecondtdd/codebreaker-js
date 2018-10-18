@@ -14,7 +14,7 @@ module.exports = class DirectActor extends BaseActor {
   // Domain-specific logic goes here...
 
   async joinGameCreatedBy(makerName) {
-    const games = this._codebreaker.getGames()
+    const games = await this._codebreaker.getGames()
     const game = games.find(game => game.makerName === makerName)
     await this._codebreaker.startGame(game.id, this._name)
     this._currentGame = game

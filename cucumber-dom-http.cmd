@@ -1,4 +1,4 @@
 @echo off
 set SESSION=DomSession
-set CONTROLLER=HTTPController
+set CONTROLLER=HttpCodebreaker
 node_modules\.bin\cucumber-electron %*
