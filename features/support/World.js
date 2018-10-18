@@ -1,17 +1,17 @@
 const {setWorldConstructor, Before, After} = require('cucumber')
 const DirectActor = require('./actors/DirectActor')
 const DomActor = require('./actors/DomActor')
-const {MemoryPubSub} = require('pubsub-multi')
+const {MemoryPubSub, EventSourcePubSub} = require('pubsub-multi')
 const Codebreaker = require('../../lib/domain/Codebreaker')
 const HttpCodebreaker = require('../../lib/domain/HttpCodebreaker')
 const VersionWatcher = require('./VersionWatcher')
 const makeWebApp = require('../../lib/httpServer/makeWebApp')
 const { WebServer } = require('express-extensions')
 
-if (typeof EventSource === 'undefined') {
+if (typeof EventSource !== 'function') {
   global.EventSource = require('eventsource')
 }
-if (typeof fetch === 'undefined') {
+if (typeof fetch !== 'function') {
   global.fetch = require('node-fetch')
 }
 
@@ -55,13 +55,15 @@ class World {
       },
 
       HttpCodebreaker: async () => {
-        const app = makeWebApp(this._codebreaker)
+        let port = null
+        const pubSub = new EventSourcePubSub(fetch, EventSource, () => `http://localhost:${port}/api/pubsub`)
+        const app = makeWebApp(this._codebreaker, pubSub)
         const webServer = new WebServer(app)
-        const port = await webServer.listen(0)
+        port = await webServer.listen(0)
         this._stoppables.push(webServer)
         const baseUrl = `http://localhost:${port}`
 
-        return new HttpCodebreaker(baseUrl)
+        return new HttpCodebreaker(baseUrl, fetch)
       }
     }
 

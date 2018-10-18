@@ -10,10 +10,8 @@ async function start() {
   const app = makeWebApp(codebreaker, pubSub, true)
   const webServer = new WebServer(app)
 
-  // setTimeout(() => {
-    codebreaker.createGame(`Joe`, "steak")
-    codebreaker.createGame(`Sal`, "nice")
-  // }, 5000)
+  codebreaker.createGame(`Joe`, "steak")
+  codebreaker.createGame(`Sal`, "nice")
 
   return webServer.listen(parseInt(process.env.PORT || '8997'))
 }
