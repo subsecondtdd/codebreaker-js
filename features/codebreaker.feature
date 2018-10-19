@@ -1,15 +1,45 @@
 Feature: Codebreaker
 
   # Rule: A game starts when the first person joins
+
   Scenario: Breaker joins Maker's 5 letter game
-    Given Molly has started a game with the word "silky"
+    Given Molly has started a game with the word "steak"
     When Benny joins Molly's game
     Then Benny must guess a word with 5 letters
 
   Scenario: Breaker joins Maker's 3 letter game
-    Given Molly has started a game with the word "boy"
+    Given Molly has started a game with the word "bun"
     When Benny joins Molly's game
     Then Benny must guess a word with 3 letters
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   # Rules to add later:
   # Rule: A player must pick a unique name
