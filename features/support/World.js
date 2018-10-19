@@ -29,8 +29,8 @@ class World {
   async getActor(actorName) {
     if (this._actors[actorName]) return this._actors[actorName]
 
-    const pubSub = this._pubSub
-    const codebreaker = await this.makeActorCodebreaker()
+    const pubSub = await this.makeActorPubSub()
+    const codebreaker = await this.makeActorCodebreaker(pubSub.port)
 
     const makers = {
       DirectActor: () => {
@@ -46,26 +46,45 @@ class World {
     this._actors[actorName] = actor
     this._stoppables.push(actor)
     const sub = await pubSub.makeSubscriber()
+    this._stoppables.push(sub)
     this._versionWatchers.push(new VersionWatcher(actor, sub))
     return actor
   }
 
-  async makeActorCodebreaker() {
+  async makeActorCodebreaker(port) {
     const makers = {
       Codebreaker: () => {
         return this._codebreaker
       },
 
       HttpCodebreaker: async () => {
-        let port = null
-        const pubSub = new EventSourcePubSub(fetch, EventSource, () => `http://localhost:${port}/api/pubsub`)
-        const app = makeWebApp(this._codebreaker, pubSub)
-        const webServer = new WebServer(app)
-        port = await webServer.listen(0)
-        this._stoppables.push(webServer)
+        if (typeof port !== 'number') throw new Error(`No port: ${port}`)
         const baseUrl = `http://localhost:${port}`
-
         return new HttpCodebreaker(baseUrl, fetch)
+      }
+    }
+
+    return await makers[process.env.API]()
+  }
+
+  async makeActorPubSub() {
+    const makers = {
+      Codebreaker: () => {
+        return this._pubSub
+      },
+
+      HttpCodebreaker: async () => {
+        let port = null
+        const pubSub = new EventSourcePubSub(fetch, EventSource, () => {
+          if (typeof port !== 'number') throw new Error(`No port: ${port}`)
+          return `http://localhost:${port}/api/pubsub`
+        })
+        const app = makeWebApp(this._codebreaker, this._pubSub)
+        const webServer = new WebServer(app)
+        this._stoppables.push(webServer)
+        port = await webServer.listen(0)
+        pubSub.port = port
+        return pubSub
       }
     }
 
@@ -78,6 +97,7 @@ class World {
 
   async start() {
     const sub = await this._pubSub.makeSubscriber()
+    this._stoppables.push(sub)
     this._versionWatchers.push(new VersionWatcher(this._codebreaker, sub))
   }
 

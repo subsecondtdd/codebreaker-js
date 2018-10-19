@@ -5,11 +5,12 @@ module.exports = class BaseActor {
   }
 
   async start() {
-    const sub = await this._pubSub.makeSubscriber()
-    await sub.subscribe('version', version => this._version = version)
+    this._sub = await this._pubSub.makeSubscriber()
+    await this._sub.subscribe('version', version => this._version = version)
   }
 
   stop() {
+    this._sub.stop()
   }
 
   getVersion() {

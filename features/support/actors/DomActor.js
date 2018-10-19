@@ -19,6 +19,7 @@ module.exports = class DomActor extends BaseActor {
   }
 
   start() {
+    super.start()
     if (this._$root) throw new Error(`DomActor ${this._name} already started`)
 
     // Prevent previous scenario's URL from interfering
@@ -32,6 +33,7 @@ module.exports = class DomActor extends BaseActor {
   }
 
   stop() {
+    super.stop()
     this._$actor.parentNode.removeChild(this._$actor)
   }
 
