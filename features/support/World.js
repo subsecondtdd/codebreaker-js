@@ -4,9 +4,9 @@ const DomActor = require('./actors/DomActor')
 const {MemoryPubSub, EventSourcePubSub} = require('pubsub-multi')
 const Codebreaker = require('../../lib/codebreaker/Codebreaker')
 const HttpCodebreaker = require('../../lib/codebreaker/HttpCodebreaker')
-const VersionWatcher = require('./VersionWatcher')
+const VersionWatcher = require('./extract/VersionWatcher')
 const makeWebApp = require('../../lib/server/makeWebApp')
-const { WebServer } = require('express-extensions')
+const {WebServer} = require('express-extensions')
 
 if (typeof EventSource !== 'function') {
   global.EventSource = require('eventsource')

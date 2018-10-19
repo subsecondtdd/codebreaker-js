@@ -1,4 +1,4 @@
-const BaseActor = require('./BaseActor')
+const BaseActor = require('../extract/BaseActor')
 
 module.exports = class DirectActor extends BaseActor {
   constructor(name, codebreaker, pubSub) {

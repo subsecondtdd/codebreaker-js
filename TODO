@@ -1,21 +1,11 @@
 # TODO
 
-- selenium?
+- Fix tests
+- Create game
+- Selenium
+
+Later:
+
+- JSX-like?
 - persistence?
-- generate game ids - maybe this is the failing test
-- different views for breakers and makers
 - real, hosted game
-- record test results / timestamps in logfile metrics
-
-# Bugs
-
-## High pri
-
-- No games to join
-  - Join should not be enabled
-
-## Lo pri
-
-- No games to join
-  - Should get error message if you join and there are no games (race cond)  
-- Two people can join same game (race condition)
