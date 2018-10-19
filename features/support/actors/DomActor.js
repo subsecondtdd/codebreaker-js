@@ -7,11 +7,11 @@ const BaseActor = require('../extract/BaseActor')
  * version. This is used to wait for synchronisation before interacting with the DOM.
  */
 module.exports = class DomActor extends BaseActor {
-  constructor(name, codebreaker, pubSub) {
-    super(pubSub)
+  constructor(name, codebreaker, sub) {
+    super(sub)
     this._name = name
     this._codebreaker = codebreaker
-    this._pubSub = pubSub
+    this._sub = sub
   }
 
   getName() {
@@ -29,12 +29,13 @@ module.exports = class DomActor extends BaseActor {
     document.body.appendChild(this._$actor)
     this._$root = document.createElement('div')
     this._$actor.appendChild(this._$root)
-    mountApp(this._$root, this._codebreaker, this._pubSub)
+    mountApp(this._$root, this._codebreaker, this._sub)
   }
 
   stop() {
     super.stop()
-    this._$actor.parentNode.removeChild(this._$actor)
+    if (!process.env.KEEP_DOM)
+      this._$actor.parentNode.removeChild(this._$actor)
   }
 
   // Domain-specific logic goes here...

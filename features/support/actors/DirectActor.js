@@ -1,8 +1,8 @@
 const BaseActor = require('../extract/BaseActor')
 
 module.exports = class DirectActor extends BaseActor {
-  constructor(name, codebreaker, pubSub) {
-    super(pubSub)
+  constructor(name, codebreaker, sub) {
+    super(sub)
     this._name = name
     this._codebreaker = codebreaker
   }

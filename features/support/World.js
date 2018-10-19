@@ -29,23 +29,22 @@ class World {
   async getActor(actorName) {
     if (this._actors[actorName]) return this._actors[actorName]
 
-    const pubSub = await this.makeActorPubSub()
-    const codebreaker = await this.makeActorCodebreaker(pubSub.port)
+    const sub = await this.makeActorSub(actorName)
+    const codebreaker = await this.makeActorCodebreaker(sub.port)
 
     const makers = {
       DirectActor: () => {
-        return new DirectActor(actorName, codebreaker, pubSub)
+        return new DirectActor(actorName, codebreaker, sub)
       },
 
       DomActor: () => {
-        return new DomActor(actorName, codebreaker, pubSub)
+        return new DomActor(actorName, codebreaker, sub)
       }
     }
     const actor = makers[process.env.ACTOR]()
     await actor.start()
     this._actors[actorName] = actor
     this._stoppables.push(actor)
-    const sub = await pubSub.makeSubscriber()
     this._stoppables.push(sub)
     this._versionWatchers.push(new VersionWatcher(actor, sub))
     return actor
@@ -67,24 +66,28 @@ class World {
     return await makers[process.env.API]()
   }
 
-  async makeActorPubSub() {
+  async makeActorSub(actorName) {
     const makers = {
-      Codebreaker: () => {
-        return this._pubSub
+      Codebreaker: async () => {
+        return this._pubSub.makeSubscriber()
       },
 
       HttpCodebreaker: async () => {
         let port = null
-        const pubSub = new EventSourcePubSub(fetch, EventSource, () => {
-          if (typeof port !== 'number') throw new Error(`No port: ${port}`)
-          return `http://localhost:${port}/api/pubsub`
-        })
+        const pubSub = new EventSourcePubSub(
+          fetch,
+          EventSource, () => {
+            if (typeof port !== 'number') throw new Error(`No port: ${port}`)
+            return `http://localhost:${port}/api/pubsub`
+          },
+          `?name=${actorName}`)
         const app = makeWebApp(this._codebreaker, this._pubSub)
         const webServer = new WebServer(app)
         this._stoppables.push(webServer)
         port = await webServer.listen(0)
-        pubSub.port = port
-        return pubSub
+        const sub = await pubSub.makeSubscriber(actorName)
+        sub.port = port
+        return sub
       }
     }
 

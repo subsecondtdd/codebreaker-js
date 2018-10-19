@@ -1,11 +1,10 @@
 module.exports = class BaseActor {
-  constructor(pubSub) {
+  constructor(sub) {
     this._version = 0
-    this._pubSub = pubSub
+    this._sub = sub
   }
 
   async start() {
-    this._sub = await this._pubSub.makeSubscriber()
     await this._sub.subscribe('version', version => this._version = version)
   }
 
