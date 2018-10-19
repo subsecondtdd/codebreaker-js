@@ -1,6 +1,7 @@
 const {setWorldConstructor, Before, After} = require('cucumber')
 const DirectActor = require('./actors/DirectActor')
 const DomActor = require('./actors/DomActor')
+const WebDriverActor = require('./actors/WebDriverActor')
 const {MemoryPubSub, EventSourcePubSub} = require('pubsub-multi')
 const Codebreaker = require('../../lib/codebreaker/Codebreaker')
 const HttpCodebreaker = require('../../lib/codebreaker/HttpCodebreaker')
@@ -30,18 +31,24 @@ class World {
     if (this._actors[actorName]) return this._actors[actorName]
 
     const sub = await this.makeActorSub(actorName)
-    const codebreaker = await this.makeActorCodebreaker(sub.port)
 
     const makers = {
-      DirectActor: () => {
-        return new DirectActor(actorName, codebreaker, sub)
+      DirectActor: async () => {
+        const codebreaker = await this.makeActorCodebreaker(sub.port)
+        return new DirectActor(actorName, sub, codebreaker)
       },
 
-      DomActor: () => {
-        return new DomActor(actorName, codebreaker, sub)
+      DomActor: async () => {
+        const codebreaker = await this.makeActorCodebreaker(sub.port)
+        return new DomActor(actorName, sub, codebreaker)
+      },
+
+      WebDriverActor: () => {
+        const baseUrl = `http://localhost:${sub.port}`
+        return new WebDriverActor(actorName, sub, baseUrl)
       }
     }
-    const actor = makers[process.env.ACTOR]()
+    const actor = await makers[process.env.ACTOR]()
     await actor.start()
     this._actors[actorName] = actor
     this._stoppables.push(actor)
@@ -79,9 +86,10 @@ class World {
           EventSource, () => {
             if (typeof port !== 'number') throw new Error(`No port: ${port}`)
             return `http://localhost:${port}/api/pubsub`
-          },
-          `?name=${actorName}`)
-        const app = makeWebApp(this._codebreaker, this._pubSub)
+          }
+        )
+        const serveClientApp = process.env.ACTOR === 'WebDriverActor'
+        const app = makeWebApp(this._codebreaker, this._pubSub, serveClientApp)
         const webServer = new WebServer(app)
         this._stoppables.push(webServer)
         port = await webServer.listen(0)

@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo -e "\n🥒 🐌️  webdriver"
+ACTOR=WebDriverActor API=HttpCodebreaker NODE_ENV=production node node_modules/.bin/cucumber-electron "$@"

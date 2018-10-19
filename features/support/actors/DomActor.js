@@ -2,20 +2,10 @@ const getMicrodata = require('../extract/getMicrodata')
 const mountApp = require('../../../lib/react/mountApp')
 const BaseActor = require('../extract/BaseActor')
 
-/**
- * The Dom Actor interacts with the Dom. It also has a reference to the codebreaker, so it can query for its
- * version. This is used to wait for synchronisation before interacting with the DOM.
- */
 module.exports = class DomActor extends BaseActor {
-  constructor(name, codebreaker, sub) {
-    super(sub)
-    this._name = name
+  constructor(name, sub, codebreaker) {
+    super(name, sub)
     this._codebreaker = codebreaker
-    this._sub = sub
-  }
-
-  getName() {
-    return this._name
   }
 
   start() {
@@ -41,7 +31,8 @@ module.exports = class DomActor extends BaseActor {
   // Domain-specific logic goes here...
 
   joinGameCreatedBy(makerName) {
-    const $submit = this._$root.querySelector(`[data-maker="${makerName}"]`)
+    const selector = `[data-maker="${makerName}"]`
+    const $submit = this._$root.querySelector(selector)
     $submit.click()
   }
 

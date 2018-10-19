@@ -1,7 +1,12 @@
 module.exports = class BaseActor {
-  constructor(sub) {
+  constructor(name, sub) {
     this._version = 0
+    this._name = name
     this._sub = sub
+  }
+
+  getName() {
+    return this._name
   }
 
   async start() {

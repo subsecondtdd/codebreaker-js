@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "test": "mocha && npm run cucumber",
-    "cucumber": "./cucumber && ./cucumber-dom && ./cucumber-http && ./cucumber-dom-http"
+    "cucumber": "./cucumber && ./cucumber-dom && ./cucumber-http && ./cucumber-dom-http && ./cucumber-webdriver"
   },
   "dependencies": {
     "browserify-middleware": "^8.1.0",

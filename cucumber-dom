@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-echo "🥒 ⚛️  dom"
+echo -e "\n🥒 ⚛️  dom"
 ACTOR=DomActor API=Codebreaker NODE_ENV=production node node_modules/.bin/cucumber-electron "$@"
