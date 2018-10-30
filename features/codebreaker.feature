@@ -1,14 +1,19 @@
 Feature: Codebreaker
 
+  # Rule
+  Scenario: Anyone can create a game
+    When Molly creates a game with the secret "steak"
+    Then Benny can see a game with 5 letters
+
   # Rule: A game starts when the first person joins
 
   Scenario: Breaker joins Maker's 5 letter game
-    Given Molly has started a game with the word "steak"
+    Given Molly has started a game with the secret "steak"
     When Benny joins Molly's game
     Then Benny must guess a word with 5 letters
 
   Scenario: Breaker joins Maker's 3 letter game
-    Given Molly has started a game with the word "bun"
+    Given Molly has started a game with the secret "bun"
     When Benny joins Molly's game
     Then Benny must guess a word with 3 letters
 

@@ -2,4 +2,12 @@
 
 Acceptance tests that run in milliseconds.
 
-This needs some docs! :-)
+## Preparation
+
+    npm install
+    npm run selenium-standalone-install
+    npm run selenium-standalone-start
+
+## Run all tests
+
+    

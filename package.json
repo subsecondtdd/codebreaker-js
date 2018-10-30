@@ -4,7 +4,9 @@
   "license": "MIT",
   "scripts": {
     "test": "mocha && npm run cucumber",
-    "cucumber": "./cucumber && ./cucumber-dom && ./cucumber-http && ./cucumber-dom-http && ./cucumber-webdriver"
+    "cucumber": "./cucumber && ./cucumber-dom && ./cucumber-http && ./cucumber-dom-http && ./cucumber-webdriver",
+    "selenium-standalone-install": "selenium-standalone install",
+    "selenium-standalone-start": "selenium-standalone start"
   },
   "dependencies": {
     "browserify-middleware": "^8.1.0",
@@ -13,7 +15,7 @@
     "fetch-22": "^1.0.0",
     "milligram": "^1.3.0",
     "nanoid": "^1.0.2",
-    "pubsub-multi": "cucumber-ltd/pubsub-multi",
+    "pubsub-multi": "1.2.2",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-router-dom": "^4.3.1",
@@ -28,6 +30,9 @@
     "mocha": "^5.2.0",
     "node-fetch": "^2.1.2",
     "prettier": "^1.12.1",
-    "selenium-webdriver": "^4.0.0-alpha.1"
+    "react-trigger-change": "^1.0.2",
+    "selenium-standalone": "^6.15.3",
+    "selenium-webdriver": "^4.0.0-alpha.1",
+    "webdriverio": "^4.13.2"
   }
 }

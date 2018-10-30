@@ -1,11 +1,15 @@
 # TODO
 
-- Fix tests
-- Create game
-- Selenium
+- [x] Fix tests
+- [x] Selenium
+- [ ] Create game
+- [ ] Make Codebreaker.test.js a contract test
 
 Later:
 
-- JSX-like?
+- Pass error status to stop so we can keep nodes for failing scenarios
+- Fix Electron refresh (push browser state same as original)
+- JSX-like syntax without transpilation - lit-html?
+- Inline styles (nicer DX in electron)
 - persistence?
 - real, hosted game
